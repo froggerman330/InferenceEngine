@@ -64,6 +64,28 @@ public interface Logic
 
     default String trimOuterBrackets(String term)
     {
+        int bracketCount = 0;
+
+        for(int i = 0; i < term.toCharArray().length; i++)
+        {
+            char c = term.toCharArray()[i];
+
+            if(c == '(')
+            {
+                bracketCount++;
+            }
+
+            if(c == ')')
+            {
+                bracketCount--;
+            }
+
+            if(bracketCount == 0 && i != term.toCharArray().length - 1)
+            {
+                return term;
+            }
+        }
+
         if(term.startsWith("(") && term.endsWith(")"))
         {
             return term.substring(1, term.length() - 1);

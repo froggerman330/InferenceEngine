@@ -92,7 +92,7 @@ public class Biconditional implements Logic
             }
             else
             {
-                this.two = new Negation(firstTerm.substring(1));
+                this.two = new Negation(secondTerm.substring(1));
             }
         }
     }
