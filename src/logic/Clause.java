@@ -1,17 +1,17 @@
 package logic;
 
+import java.util.HashMap;
 import java.util.HashSet;
 
 import logic.operator.Biconditional;
 import logic.operator.Conjunction;
 import logic.operator.Disjunction;
-import logic.operator.Negation;
 import exception.NotSolvableException;
 
 public class Clause implements Logic
 {
     HashSet<Logic> operators = new HashSet<Logic>();
-    HashSet<Term> terms = new HashSet<Term>();
+    HashMap<String, Term> terms = new HashMap<String, Term>();
     String clause;
 
     /**
@@ -50,15 +50,33 @@ public class Clause implements Logic
         }
         else
         {
+            Term t;
             if(!clause.startsWith("~"))
             {
-                Term t = new Term(clause);
+                t = new Term(clause);
                 t.setValue(true);
-                this.terms.add(t);
             }
             else
             {
-                this.operators.add(new Negation(clause.substring(1)));
+                t = new Term(clause.substring(1));
+                t.setValue(false);
+            }
+
+            if(!this.terms.containsKey(t.getName()))
+            {
+                this.terms.put(t.getName(), t);
+            }
+            else
+            {
+                Term t1 = this.terms.get(t.getName());
+                try
+                {
+                    t1.setValue(t.evaluate());
+                }
+                catch(NotSolvableException e)
+                {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -75,7 +93,7 @@ public class Clause implements Logic
 
         for(String term : terms.split(","))
         {
-            this.terms.add(new Term(term));
+            this.terms.put(term, new Term(term));
         }
     }
 
@@ -89,7 +107,7 @@ public class Clause implements Logic
     @Override
     public boolean canSolve()
     {
-        for(Term t : this.terms)
+        for(Term t : this.terms.values())
         {
             if(!t.canSolve())
             {

@@ -12,7 +12,7 @@ public class Infer
         // 0 method
         // 1 file
         // String[] clauses = new Read(args[1]).getClauses();
-        String[] clauses = {"(A|(B=>~C))&~((D<=>E)&F)", "", ""};
+        String[] clauses = {"~b1", "(A|(B=>~C))&~((D<=>E)&F)", "", ""};
 
         for(String clause : clauses)
         {
