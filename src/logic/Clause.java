@@ -57,7 +57,7 @@ public class Clause implements Logic
                 t.setValue(true);
             }
             else
-            {
+            {// TODO: make sure it is actually a term (I think not always)
                 t = new Term(clause.substring(1));
                 t.setValue(false);
             }

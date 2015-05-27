@@ -5,6 +5,7 @@ import java.util.LinkedList;
 
 import logic.Clause;
 import logic.Term;
+import exception.NotSolvableException;
 
 public class Infer
 {
@@ -33,16 +34,37 @@ public class Infer
 
         for(Clause c : clauseList)
         {
-            for(String key : c.getTerms().keySet())
+            HashMap<String, Term> cTerm = c.getTerms();
+            for(String key : cTerm.keySet())
             {
+                Term t = cTerm.get(key);
+
                 if(!terms.containsKey(key))
                 {
-                    terms.put(key, new Term(key));
+                    terms.put(t.getName(), t);
                 }// does not contain actual knowns.
-            }
-        }
+                else
+                {
+                    Term t1 = terms.get(key);
+                    try
+                    {
+                        t1.setValue(t1.evaluate());
+                    }
+                    catch(NotSolvableException e)
+                    {
+                        try
+                        {
+                            t1.setValue(t.evaluate());
+                        }
+                        catch(NotSolvableException e1)
+                        {
+                        }
+                    }
 
-        System.out.println("done");
+                }
+            }
+        }// all terms are now in terms and have their values if any are given.
+
         // clause
 
     }
