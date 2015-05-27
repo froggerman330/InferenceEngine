@@ -83,8 +83,10 @@ public class Conjunction implements Logic
             {
                 this.two = new Term(secondTerm);
             }
-
-            this.two = new Negation(secondTerm.substring(1));
+            else
+            {
+                this.two = new Negation(firstTerm.substring(1));
+            }
         }
     }
 
