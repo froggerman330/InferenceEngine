@@ -49,8 +49,10 @@ public class Disjunction implements Logic
             {
                 this.one = new Term(firstTerm);
             }
-
-            this.one = new Negation(firstTerm.substring(1));
+            else
+            {
+                this.one = new Negation(firstTerm.substring(1));
+            }
         }
 
         if(neutralPos2 != -1)

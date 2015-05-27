@@ -56,8 +56,10 @@ public class Clause implements Logic
                 t.setValue(true);
                 this.terms.add(t);
             }
-
-            this.operators.add(new Negation(clause.substring(1)));
+            else
+            {
+                this.operators.add(new Negation(clause.substring(1)));
+            }
         }
     }
 
