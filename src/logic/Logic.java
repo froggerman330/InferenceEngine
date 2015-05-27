@@ -25,6 +25,11 @@ public interface Logic
     {
         int bracketNeutrality = 0;
 
+        if(clause.startsWith("~"))
+        {
+            return -1;
+        }
+
         for(int i = 0; i < clause.toCharArray().length; i++)
         {
             char c = clause.toCharArray()[i];
