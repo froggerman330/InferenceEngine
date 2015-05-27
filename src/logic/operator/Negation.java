@@ -49,7 +49,7 @@ public class Negation implements Logic
             }
             else
             {
-                this.one = new Negation(firstTerm.substring(0));
+                this.one = new Negation(firstTerm.substring(1));
             }
         }
     }

@@ -51,7 +51,7 @@ public class Conditional implements Logic
             }
             else
             {
-                this.one = new Negation(firstTerm.substring(0));
+                this.one = new Negation(firstTerm.substring(1));
             }
         }
 
@@ -85,7 +85,7 @@ public class Conditional implements Logic
             }
             else
             {
-                this.two = new Negation(firstTerm.substring(0));
+                this.two = new Negation(firstTerm.substring(1));
             }
         }
     }
