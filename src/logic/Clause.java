@@ -97,6 +97,11 @@ public class Clause implements Logic
         }
     }
 
+    public HashMap<String, Term> getTerms()
+    {
+        return this.terms;
+    }
+
     @Override
     public boolean evaluate() throws NotSolvableException
     {
