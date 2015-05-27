@@ -58,7 +58,7 @@ public class Clause implements Logic
             }
             else
             {
-                this.operators.add(new Negation(clause.substring(1)));
+                this.operators.add(new Negation(clause.substring(0)));
             }
         }
     }
