@@ -14,9 +14,10 @@ public class Negation implements Logic
 {
     private Logic one;
 
-    public Negation(String firstTerm)
+    public Negation(String first)
     {
-        int neutralPos1 = this.findBracketNeutrality(this.trimOuterBrackets(firstTerm));
+        String firstTerm = this.trimOuterBrackets(first);
+        int neutralPos1 = this.findBracketNeutrality(firstTerm);
 
         if(neutralPos1 != -1)
         {

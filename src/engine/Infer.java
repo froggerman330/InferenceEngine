@@ -11,7 +11,8 @@ public class Infer
         LinkedList<Clause> clauseList = new LinkedList<Clause>();
         // 0 method
         // 1 file
-        String[] clauses = new Read(args[1]).getClauses();
+        // String[] clauses = new Read(args[1]).getClauses();
+        String[] clauses = {"(A|(B=>~C))&~((D<=>E)&F)|G", "", ""};
 
         for(String clause : clauses)
         {

@@ -14,10 +14,12 @@ public class Conditional implements Logic
 {
     private Logic one, two;
 
-    public Conditional(String firstTerm, String secondTerm)
+    public Conditional(String first, String second)
     {
-        int neutralPos1 = this.findBracketNeutrality(this.trimOuterBrackets(firstTerm));
-        int neutralPos2 = this.findBracketNeutrality(this.trimOuterBrackets(secondTerm));
+        String firstTerm = this.trimOuterBrackets(first);
+        String secondTerm = this.trimOuterBrackets(second);
+        int neutralPos1 = this.findBracketNeutrality(firstTerm);
+        int neutralPos2 = this.findBracketNeutrality(secondTerm);
 
         if(neutralPos1 != -1)
         {

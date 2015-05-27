@@ -2,7 +2,6 @@ package logic;
 
 import exception.NotSolvableException;
 
-
 public interface Logic
 {
     /**
@@ -25,7 +24,6 @@ public interface Logic
     default int findBracketNeutrality(String clause)
     {
         int bracketNeutrality = 0;
-        boolean primed = false;
 
         for(int i = 0; i < clause.toCharArray().length; i++)
         {
@@ -40,12 +38,7 @@ public interface Logic
                 bracketNeutrality--;
             }
 
-            if(bracketNeutrality == 1)
-            {
-                primed = true;
-            }
-
-            if(primed && (bracketNeutrality == 0) && (c == '&' | c == '|' | c == '<' | c == '='))
+            if((bracketNeutrality == 0) && (c == '&' | c == '|' | c == '<' | c == '='))
             {
                 switch(c)
                 {

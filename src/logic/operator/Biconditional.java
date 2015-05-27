@@ -21,10 +21,12 @@ public class Biconditional implements Logic
      * @param secondTerm
      *            String of the second term in the biconditional. (A|(B=>C)) <=> <b>((D&E)&F)|G</b>
      */
-    public Biconditional(String firstTerm, String secondTerm)
+    public Biconditional(String first, String second)
     {
-        int neutralPos1 = this.findBracketNeutrality(this.trimOuterBrackets(firstTerm));
-        int neutralPos2 = this.findBracketNeutrality(this.trimOuterBrackets(secondTerm));
+        String firstTerm = this.trimOuterBrackets(first);
+        String secondTerm = this.trimOuterBrackets(second);
+        int neutralPos1 = this.findBracketNeutrality(firstTerm);
+        int neutralPos2 = this.findBracketNeutrality(secondTerm);
 
         if(neutralPos1 != -1)
         {
