@@ -1,5 +1,7 @@
 package logic;
 
+import java.util.HashMap;
+
 import exception.NotSolvableException;
 
 public interface Logic
@@ -124,4 +126,6 @@ public interface Logic
 
         return -1;
     }
+
+    public void setTerms(HashMap<String, Literal> terms);
 }
