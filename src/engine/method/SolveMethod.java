@@ -1,6 +1,6 @@
 package engine.method;
 
-abstract class Method
+public interface SolveMethod
 {
     abstract void solve();
 }

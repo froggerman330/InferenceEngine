@@ -6,10 +6,10 @@ import java.util.LinkedList;
 import logic.Clause;
 import logic.Term;
 
-public class ForwardChaining implements SolveMethod
+public class BackwardChaining implements SolveMethod
 {
 
-    public ForwardChaining(LinkedList<Clause> clauseList, HashMap<String, Term> literals)
+    public BackwardChaining(LinkedList<Clause> clauseList, HashMap<String, Term> literals)
     {
         // TODO Auto-generated constructor stub
     }

@@ -5,6 +5,10 @@ import java.util.LinkedList;
 
 import logic.Clause;
 import logic.Term;
+import engine.method.BackwardChaining;
+import engine.method.ForwardChaining;
+import engine.method.SolveMethod;
+import engine.method.TruthTable;
 import exception.NotSolvableException;
 
 public class Infer
@@ -13,6 +17,7 @@ public class Infer
     {
         LinkedList<Clause> clauseList = new LinkedList<Clause>();
         HashMap<String, Term> literals = new HashMap<String, Term>();
+        HashMap<String, Term> terms = new HashMap<String, Term>();
 
         // 0 method
         // 1 file
@@ -24,14 +29,28 @@ public class Infer
             clauses[i - 1] = readData[i];
         }
 
-        // String[] clauses = {"~b1", "(A|(B=>~C))&~((D<=>E)&F)", "", ""};
-
         for(String clause : clauses)
         {
             System.out.println(clause);
             clauseList.add(new Clause(clause));
         }
 
+        // populate list
+        for(Clause c : clauseList)
+        {
+            HashMap<String, Term> cTerm = c.getTerms();
+            for(String key : cTerm.keySet())
+            {
+                Term t = cTerm.get(key);
+
+                if(!terms.containsKey(key))
+                {
+                    terms.put(t.getName(), t);
+                }// does not contain actual knowns.
+            }
+        }
+
+        // get values for all literals
         for(Clause c : clauseList)
         {
             HashMap<String, Term> cTerm = c.getTerms();
@@ -63,10 +82,47 @@ public class Infer
 
                 }
             }
-        }// all terms are now in terms and have their values if any are given.
+        }// all terms are now in terms and have values and are linked.
 
-        literals.get("p3").setValue(true);
-        // clause
-        System.out.println("");
+        // add values to the terms
+        for(Term lit : terms.values())
+        {
+            try
+            {
+                lit.setValue(literals.get(lit.getName()).evaluate());
+            }
+            catch(NotSolvableException e)
+            {
+            }
+        }
+
+        // replace all literals in clauses with the terms
+        for(Clause c : clauseList)
+        {
+            HashMap<String, Term> cTerm = c.getTerms();
+            for(Term t : cTerm.values())
+            {
+                t = terms.get(t.getName());
+            }
+        }
+
+        for(Term lit : literals.values())
+        {
+            lit.setValue(true);
+        }
+
+        SolveMethod method;
+
+        switch(args[0])
+        {
+            case "TT":
+                method = new TruthTable(clauseList, literals);
+                break;
+            case "FC":
+                method = new ForwardChaining(clauseList, literals);
+                break;
+            case "BC":
+                method = new BackwardChaining(clauseList, literals);
+        }
     }
 }
