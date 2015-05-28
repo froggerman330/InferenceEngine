@@ -113,7 +113,8 @@ public class Disjunction implements Logic
     {
         if(this.canSolve())
         {
-            return this.one.evaluate() || this.two.evaluate();
+            boolean value = this.one.evaluate() | this.two.evaluate();
+            return value;
         }
 
         throw new NotSolvableException();

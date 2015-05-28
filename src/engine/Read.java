@@ -62,7 +62,7 @@ public class Read
                 sb.append(";");
             }
 
-            return sb.toString().replaceAll(" ", "").split(";");
+            return sb.toString().toLowerCase().replaceAll(" ", "").split(";");
 
         }
         catch(FileNotFoundException ex)

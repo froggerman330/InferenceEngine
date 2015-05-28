@@ -113,7 +113,8 @@ public class Conditional implements Logic
     {
         if(this.canSolve())
         {
-            return this.two.evaluate() ? this.two.evaluate() : !(this.one.evaluate());
+            boolean value = this.two.evaluate() ? this.two.evaluate() : !(this.one.evaluate());
+            return value;
         }
 
         throw new NotSolvableException();

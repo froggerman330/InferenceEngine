@@ -32,7 +32,7 @@ public class TruthTable implements SolveMethod
             int x = 1 << i;
             masks[i] = x;
             l.setValue(false);
-            orderTerms.add(l);
+            orderTerms.addFirst(l);
             i++;
         }
 
@@ -41,7 +41,7 @@ public class TruthTable implements SolveMethod
             boolean failed = false;
             for(int k = 0; k < orderTerms.size(); k++)
             {
-                if((j & masks[k]) == (1 << k))
+                if((j & masks[k]) == masks[k])
                 {
                     Literal l = orderTerms.get(k);
                     l.setValue(true);
@@ -71,6 +71,11 @@ public class TruthTable implements SolveMethod
                     if(this.literals.get(this.ask).evaluate())
                     {
                         truths++;
+                    }
+                    else
+                    {
+                        System.out.println("NO");
+                        return;
                     }
                 }
                 catch(NotSolvableException e)

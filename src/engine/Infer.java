@@ -20,7 +20,7 @@ public class Infer
         // 0 method
         // 1 file
         String[] readData = new Read(args[1]).getClauses();
-        String ask = readData[0];
+        String ask = readData[0].toLowerCase();
         String[] sentances = new String[readData.length - 1];
         for(int i = 1; i < readData.length; i++)
         {
