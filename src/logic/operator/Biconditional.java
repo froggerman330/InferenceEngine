@@ -97,6 +97,22 @@ public class Biconditional implements Logic
         }
     }
 
+    /**
+     * @return the first logical term
+     */
+    public Logic getOne()
+    {
+        return this.one;
+    }
+
+    /**
+     * @return the second logical term
+     */
+    public Logic getTwo()
+    {
+        return this.two;
+    }
+
     @Override
     public boolean evaluate() throws NotSolvableException
     {

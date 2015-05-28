@@ -54,6 +54,14 @@ public class Negation implements Logic
         }
     }
 
+    /**
+     * @return the first logical term
+     */
+    public Logic getOne()
+    {
+        return this.one;
+    }
+
     @Override
     public boolean evaluate() throws NotSolvableException
     {

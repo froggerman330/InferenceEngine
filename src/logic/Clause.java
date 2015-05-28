@@ -6,6 +6,7 @@ import java.util.HashSet;
 import logic.operator.Biconditional;
 import logic.operator.Conjunction;
 import logic.operator.Disjunction;
+import logic.operator.Negation;
 import exception.NotSolvableException;
 
 public class Clause implements Logic
@@ -50,7 +51,7 @@ public class Clause implements Logic
         }
         else
         {
-            Term t;
+            Term t = null;
             if(!clause.startsWith("~"))
             {
                 t = new Term(clause);
@@ -58,8 +59,16 @@ public class Clause implements Logic
             }
             else
             {// TODO: make sure it is actually a term (I think not always)
-                t = new Term(clause.substring(1));
-                t.setValue(false);
+                Negation not = new Negation(clause.substring(1));
+                if(not.getOne() instanceof Term)
+                {
+                    t = (Term) not.getOne();
+                    t.setValue(false);
+                }
+                else
+                {
+                    this.operators.add(not);
+                }
             }
 
             if(!this.terms.containsKey(t.getName()))
