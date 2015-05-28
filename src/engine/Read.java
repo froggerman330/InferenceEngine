@@ -41,6 +41,7 @@ public class Read
             }
 
             sb.append(fr.readLine());
+
             ask = fr.readLine();
 
             if(!ask.equalsIgnoreCase("ASK"))
@@ -49,8 +50,23 @@ public class Read
                 System.exit(1);
             }
 
-            sb.insert(0, fr.readLine() + ";");
+            String clauseLine = sb.toString();
+            String[] clauses = clauseLine.split(";");
+
+            System.out.println("first print: " + sb.toString());
+            sb.delete(0, sb.length());
+
+            sb.append(fr.readLine() + ";");
+            for(String str : clauses)
+            {
+                sb.append(addBrackets(str));
+                sb.append(";");
+            }
+
+            System.out.println("second: " + sb.toString());
+
             return sb.toString().replaceAll(" ", "").split(";");
+
         }
         catch(FileNotFoundException ex)
         {
@@ -69,4 +85,87 @@ public class Read
 
         return null;
     }
+
+    private static String addBrackets(String str)
+    {
+        String s = str.trim();
+        char first = '&';
+        int logic = 0;
+        boolean bracketed = false;
+
+        for(int i = 0; i < s.toCharArray().length; i++)
+        {
+            char c = s.toCharArray()[i];
+            switch(c)
+            {
+                case '&':
+                    logic++;
+                    if(logic == 1)
+                    {
+                        first = c;
+                    }
+                    break;
+                case '|':
+                    logic++;
+                    if(logic == 1)
+                    {
+                        first = c;
+                    }
+                    break;
+                case '<':
+                    logic++;
+                    if(logic == 1)
+                    {
+                        first = c;
+                    }
+                    i++;
+                    break;
+                case '=':
+                    logic++;
+                    if(logic == 1)
+                    {
+                        first = c;
+                    }
+                    break;
+            }
+        }
+
+        if(logic > 1)
+        { // more than 1 logic symbol, need to add brackets.
+            for(int j = 0; j < s.toCharArray().length; j++)
+            {
+                char d = s.toCharArray()[j];
+                if(d == ' ')
+                {
+                    if(j > s.indexOf(first))
+                    {
+                        if(!bracketed)
+                        {
+                            String[] ss = s.split(Character.toString(s.charAt(j)), 2);
+                            s = "(" + ss[0] + ")" + ss[1];
+                            bracketed = true;
+                        }
+                    }
+                    else if(!bracketed)
+                    {
+                        switch(first)
+                        {
+                            case '<':
+                                j += 4;
+                                break;
+                            case '=':
+                                j += 3;
+                                break;
+                        }
+
+                        s = s.substring(0, j) + "(" + s.substring(j, s.length()) + ")";
+                        bracketed = true;
+                    }
+                }
+            }
+        }
+
+        return s;
+    }
+
 }
