@@ -1,6 +1,13 @@
 package engine.method;
 
-public class ForwardChaining
+public class ForwardChaining extends Method
 {
+
+    @Override
+    void solve()
+    {
+        // TODO Auto-generated method stub
+
+    }
 
 }
