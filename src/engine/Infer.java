@@ -3,53 +3,69 @@ package engine;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import logic.Literal;
-import logic.Sentance;
-import engine.method.BackwardChaining;
-import engine.method.ForwardChaining;
-import engine.method.SolveMethod;
-import engine.method.TruthTable;
+import logic.Clause;
+import logic.Term;
+import exception.NotSolvableException;
 
 public class Infer
 {
     public static void main(String... args)
     {
-        LinkedList<Sentance> sentanceList = new LinkedList<Sentance>();
-        HashMap<String, Literal> literals = new HashMap<String, Literal>();
+        LinkedList<Clause> clauseList = new LinkedList<Clause>();
+        HashMap<String, Term> terms = new HashMap<String, Term>();
 
         // 0 method
         // 1 file
         String[] readData = new Read(args[1]).getClauses();
         String ask = readData[0];
-        String[] sentances = new String[readData.length - 1];
+        String[] clauses = new String[readData.length - 1];
         for(int i = 1; i < readData.length; i++)
         {
-            sentances[i - 1] = readData[i];
+            clauses[i - 1] = readData[i];
         }
 
-        for(String sentance : sentances)
+        // String[] clauses = {"~b1", "(A|(B=>~C))&~((D<=>E)&F)", "", ""};
+
+        for(String clause : clauses)
         {
-            System.out.println(sentance);
-            sentanceList.add(new Sentance(sentance));
+            System.out.println(clause);
+            clauseList.add(new Clause(clause));
         }
 
-        for(Sentance s : sentanceList)
+        for(Clause c : clauseList)
         {
-            s.setTerms(literals);
-        }
+            HashMap<String, Term> cTerm = c.getTerms();
+            for(String key : cTerm.keySet())
+            {
+                Term t = cTerm.get(key);
 
-        SolveMethod method;
+                if(!terms.containsKey(key))
+                {
+                    terms.put(t.getName(), t);
+                }// does not contain actual knowns.
+                else
+                {
+                    Term t1 = terms.get(key);
+                    try
+                    {
+                        t1.setValue(t1.evaluate());
+                    }
+                    catch(NotSolvableException e)
+                    {
+                        try
+                        {
+                            t1.setValue(t.evaluate());
+                        }
+                        catch(NotSolvableException e1)
+                        {
+                        }
+                    }
 
-        switch(args[0])
-        {
-            case "TT":
-                method = new TruthTable(sentanceList, literals);
-                break;
-            case "FC":
-                method = new ForwardChaining(sentanceList, literals);
-                break;
-            case "BC":
-                method = new BackwardChaining(sentanceList, literals);
-        }
+                }
+            }
+        }// all terms are now in terms and have their values if any are given.
+
+        // clause
+
     }
 }

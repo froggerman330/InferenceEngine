@@ -64,13 +64,18 @@ public interface Logic
         return findLogicSymbol(clause);
     }
 
-    default String trimOuterBrackets(String term)
+    /**
+     * 
+     * @param clause
+     * @return
+     */
+    default String trimOuterBrackets(String clause)
     {
         int bracketCount = 0;
 
-        for(int i = 0; i < term.toCharArray().length; i++)
+        for(int i = 0; i < clause.toCharArray().length; i++)
         {
-            char c = term.toCharArray()[i];
+            char c = clause.toCharArray()[i];
 
             if(c == '(')
             {
@@ -82,20 +87,25 @@ public interface Logic
                 bracketCount--;
             }
 
-            if(bracketCount == 0 && i != term.toCharArray().length - 1)
+            if(bracketCount == 0 && i != clause.toCharArray().length - 1)
             {
-                return term;
+                return clause;
             }
         }
 
-        if(term.startsWith("(") && term.endsWith(")"))
+        if(clause.startsWith("(") && clause.endsWith(")"))
         {
-            return term.substring(1, term.length() - 1);
+            return clause.substring(1, clause.length() - 1);
         }
 
-        return term;
+        return clause;
     }
 
+    /**
+     * Returns the index of the first logic symbol contained in the string 
+     * @param clause String of literals with logic operators
+     * @return index of first logic symbol
+     */
     default int findLogicSymbol(String clause)
     {
         for(int i = 0; i < clause.toCharArray().length; i++)
