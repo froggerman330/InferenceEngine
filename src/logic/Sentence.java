@@ -4,46 +4,47 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import logic.operator.Biconditional;
+import logic.operator.Conditional;
 import logic.operator.Conjunction;
 import logic.operator.Disjunction;
 import logic.operator.Negation;
 import exception.NotSolvableException;
 
-public class Sentance implements Logic
+public class Sentence implements Logic
 {
     HashSet<Logic> operators = new HashSet<Logic>();
-    HashMap<String, Literal> literals = new HashMap<String, Literal>();
-    String clause;
+    Literal literal;
+    String sentance;
 
     /**
      * 
-     * @param clause
+     * @param sentence
      *            string containing no spaces of a clause (many terms)
      */
-    public Sentance(String clause)
+    public Sentence(String sentence)
     {
-        this.clause = clause;
+        this.sentance = sentence;
 
-        int neutralPos1 = this.findBracketNeutrality(this.trimOuterBrackets(clause));
+        int neutralPos1 = this.findBracketNeutrality(this.trimOuterBrackets(sentence));
 
         if(neutralPos1 != -1)
         {
-            switch(clause.charAt(neutralPos1))
+            switch(sentence.charAt(neutralPos1))
             {
                 case '&':
-                    this.operators.add(new Conjunction(clause.substring(0, neutralPos1), clause
+                    this.operators.add(new Conjunction(sentence.substring(0, neutralPos1), sentence
                             .substring(neutralPos1 + 1)));
                     break;
                 case '|':
-                    this.operators.add(new Disjunction(clause.substring(0, neutralPos1), clause
+                    this.operators.add(new Disjunction(sentence.substring(0, neutralPos1), sentence
                             .substring(neutralPos1 + 1)));
                     break;
                 case '<':
-                    this.operators.add(new Biconditional(clause.substring(0, neutralPos1), clause
+                    this.operators.add(new Biconditional(sentence.substring(0, neutralPos1), sentence
                             .substring(neutralPos1 + 3)));
                     break;
                 case '=':
-                    this.operators.add(new Biconditional(clause.substring(0, neutralPos1), clause
+                    this.operators.add(new Conditional(sentence.substring(0, neutralPos1), sentence
                             .substring(neutralPos1 + 2)));
                     break;
             }
@@ -51,14 +52,14 @@ public class Sentance implements Logic
         else
         {
             Literal t = null;
-            if(!clause.startsWith("~"))
+            if(!sentence.startsWith("~"))
             {
-                t = new Literal(clause);
+                t = new Literal(sentence);
                 t.setValue(true);
             }
             else
             {
-                Negation not = new Negation(clause.substring(1));
+                Negation not = new Negation(sentence.substring(1));
                 if(not.getOne() instanceof Literal)
                 {
                     t = (Literal) not.getOne();
@@ -70,46 +71,33 @@ public class Sentance implements Logic
                 }
             }
 
-            if(!this.literals.containsKey(t.getName()))
-            {
-                this.literals.put(t.getName(), t);
-            }
-            else
-            {
-                Literal t1 = this.literals.get(t.getName());
-                try
-                {
-                    t1.setValue(t.evaluate());
-                }
-                catch(NotSolvableException e)
-                {
-                    e.printStackTrace();
-                }
-            }
+            this.literal = t;
         }
-    }
-
-    public HashMap<String, Literal> getTerms()
-    {
-        return this.literals;
     }
 
     @Override
     public boolean evaluate() throws NotSolvableException
     {
-        // TODO Auto-generated method stub
-        return false;
+        boolean value = true;
+        if(this.literal != null)
+        {
+            value &= this.literal.evaluate();
+        }
+
+        for(Logic l : this.operators)
+        {
+            value &= l.evaluate();
+        }
+
+        return value;
     }
 
     @Override
     public boolean canSolve()
     {
-        for(Literal t : this.literals.values())
+        if(!this.literal.canSolve())
         {
-            if(!t.canSolve())
-            {
-                return false;
-            }
+            return false;
         }
 
         for(Logic l : this.operators)
@@ -124,37 +112,39 @@ public class Sentance implements Logic
     }
 
     @Override
-    public void setTerms(HashMap<String, Literal> terms)
+    public HashMap<String, Literal> setTerms(HashMap<String, Literal> terms)
     {
-        for(Literal lit : this.literals.values())
+        HashMap<String, Literal> tempTerms = terms;
+
+        if(this.literal != null)
         {
-            if(terms.containsKey(lit.getName()))
+            if(terms.containsKey(this.literal.getName()))
             {
-                Literal temp = terms.get(lit.getName());
+                Literal temp = tempTerms.get(this.literal.getName());
                 if(!temp.canSolve())
                 {
                     try
                     {
-                        temp.setValue(lit.evaluate());
+                        temp.setValue(this.literal.evaluate());
                     }
                     catch(NotSolvableException e)
                     {
                     }
                 }
 
-                lit = temp;
+                this.literal = temp;
             }
             else
             {
-                terms.put(lit.getName(), lit);
+                tempTerms.put(this.literal.getName(), this.literal);
             }
         }
 
-        this.literals = terms;
-
         for(Logic op : this.operators)
         {
-            op.setTerms(terms);
+            tempTerms.putAll(op.setTerms(tempTerms));
         }
+
+        return tempTerms;
     }
 }

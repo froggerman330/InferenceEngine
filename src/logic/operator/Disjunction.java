@@ -40,7 +40,7 @@ public class Disjunction implements Logic
                             firstTerm.substring(neutralPos1 + 3));
                     break;
                 case '=':
-                    this.one = new Biconditional(firstTerm.substring(0, neutralPos1),
+                    this.one = new Conditional(firstTerm.substring(0, neutralPos1),
                             firstTerm.substring(neutralPos1 + 2));
                     break;
             }
@@ -126,17 +126,18 @@ public class Disjunction implements Logic
     }
 
     @Override
-    public void setTerms(HashMap<String, Literal> terms)
+    public HashMap<String, Literal> setTerms(HashMap<String, Literal> terms)
     {
+        HashMap<String, Literal> tempTerms = terms;
         if(this.one instanceof Literal)
         {
             Literal temp = (Literal) this.one;
 
-            if(terms.containsKey(temp.getName()))
+            if(tempTerms.containsKey(temp.getName()))
             {
                 try
                 {
-                    terms.get(temp.getName()).setValue(temp.evaluate());
+                    tempTerms.get(temp.getName()).setValue(temp.evaluate());
                 }
                 catch(NotSolvableException e)
                 {
@@ -144,25 +145,25 @@ public class Disjunction implements Logic
             }
             else
             {
-                terms.put(temp.getName(), temp);
+                tempTerms.put(temp.getName(), temp);
             }
 
-            this.one = terms.get(temp.getName());
+            this.one = tempTerms.get(temp.getName());
         }
         else
         {
-            this.one.setTerms(terms);
+            tempTerms = this.one.setTerms(tempTerms);
         }
 
         if(this.two instanceof Literal)
         {
             Literal temp = (Literal) this.two;
 
-            if(terms.containsKey(temp.getName()))
+            if(tempTerms.containsKey(temp.getName()))
             {
                 try
                 {
-                    terms.get(temp.getName()).setValue(temp.evaluate());
+                    tempTerms.get(temp.getName()).setValue(temp.evaluate());
                 }
                 catch(NotSolvableException e)
                 {
@@ -170,14 +171,16 @@ public class Disjunction implements Logic
             }
             else
             {
-                terms.put(temp.getName(), temp);
+                tempTerms.put(temp.getName(), temp);
             }
 
-            this.two = terms.get(temp.getName());
+            this.two = tempTerms.get(temp.getName());
         }
         else
         {
-            this.two.setTerms(terms);
+            tempTerms = this.two.setTerms(tempTerms);
         }
+
+        return tempTerms;
     }
 }

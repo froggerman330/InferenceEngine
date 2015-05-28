@@ -102,8 +102,10 @@ public interface Logic
     }
 
     /**
-     * Returns the index of the first logic symbol contained in the string 
-     * @param clause String of literals with logic operators
+     * Returns the index of the first logic symbol contained in the string
+     * 
+     * @param clause
+     *            String of literals with logic operators
      * @return index of first logic symbol
      */
     default int findLogicSymbol(String clause)
@@ -131,6 +133,7 @@ public interface Logic
      * Set the literals of all following logic operators to be from the same group.
      * 
      * @param terms
+     * @return
      */
-    public void setTerms(HashMap<String, Literal> terms);
+    public HashMap<String, Literal> setTerms(HashMap<String, Literal> terms);
 }

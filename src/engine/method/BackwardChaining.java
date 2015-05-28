@@ -4,15 +4,15 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 import logic.Literal;
-import logic.Sentance;
+import logic.Sentence;
 
 public class BackwardChaining implements SolveMethod
 {
     private HashMap<String, Literal> literals;
-    private LinkedList<Sentance> sentances;
+    private LinkedList<Sentence> sentances;
     private String ask;
 
-    public BackwardChaining(LinkedList<Sentance> clauseList, HashMap<String, Literal> literals, String ask)
+    public BackwardChaining(LinkedList<Sentence> clauseList, HashMap<String, Literal> literals, String ask)
     {
         this.literals = literals;
         this.sentances = clauseList;

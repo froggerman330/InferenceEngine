@@ -44,8 +44,8 @@ public class Literal implements Logic
     }
 
     @Override
-    public void setTerms(HashMap<String, Literal> terms)
+    public HashMap<String, Literal> setTerms(HashMap<String, Literal> terms)
     {
-
+        return null;
     }
 }

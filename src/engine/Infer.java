@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 import logic.Literal;
-import logic.Sentance;
+import logic.Sentence;
 import engine.method.BackwardChaining;
 import engine.method.ForwardChaining;
 import engine.method.SolveMethod;
@@ -14,7 +14,7 @@ public class Infer
 {
     public static void main(String... args)
     {
-        LinkedList<Sentance> sentanceList = new LinkedList<Sentance>();
+        LinkedList<Sentence> sentanceList = new LinkedList<Sentence>();
         HashMap<String, Literal> literals = new HashMap<String, Literal>();
 
         // 0 method
@@ -29,18 +29,17 @@ public class Infer
 
         for(String sentance : sentances)
         {
-            System.out.println(sentance);
-            sentanceList.add(new Sentance(sentance));
+            sentanceList.add(new Sentence(sentance));
         }
 
-        for(Sentance s : sentanceList)
+        for(Sentence s : sentanceList)
         {
-            s.setTerms(literals);
+            literals.putAll(s.setTerms(literals));
         }
 
-        SolveMethod method;
+        SolveMethod method = null;
 
-        switch(args[0])
+        switch(args[0].toUpperCase())
         {
             case "TT":
                 method = new TruthTable(sentanceList, literals, ask);
@@ -51,5 +50,7 @@ public class Infer
             case "BC":
                 method = new BackwardChaining(sentanceList, literals, ask);
         }
+
+        method.solve();
     }
 }

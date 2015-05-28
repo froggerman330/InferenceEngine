@@ -53,7 +53,6 @@ public class Read
             String clauseLine = sb.toString();
             String[] clauses = clauseLine.split(";");
 
-            System.out.println("first print: " + sb.toString());
             sb.delete(0, sb.length());
 
             sb.append(fr.readLine() + ";");
@@ -62,8 +61,6 @@ public class Read
                 sb.append(addBrackets(str));
                 sb.append(";");
             }
-
-            System.out.println("second: " + sb.toString());
 
             return sb.toString().replaceAll(" ", "").split(";");
 
