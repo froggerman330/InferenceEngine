@@ -9,6 +9,10 @@ import exception.NotSolvableException;
 
 public class Infer
 {
+	/**
+	 * blah blah
+	 * @param args
+	 */
     public static void main(String... args)
     {
         LinkedList<Clause> clauseList = new LinkedList<Clause>();
