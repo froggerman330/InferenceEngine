@@ -1,7 +1,9 @@
 package logic.operator;
 
+import java.util.HashMap;
+
+import logic.Literal;
 import logic.Logic;
-import logic.Term;
 import exception.NotSolvableException;
 
 /**
@@ -45,7 +47,7 @@ public class Negation implements Logic
         {
             if(!firstTerm.startsWith("~"))
             {
-                this.one = new Term(firstTerm);
+                this.one = new Literal(firstTerm);
             }
             else
             {
@@ -77,5 +79,35 @@ public class Negation implements Logic
     public boolean canSolve()
     {
         return this.one.canSolve();
+    }
+
+    @Override
+    public void setTerms(HashMap<String, Literal> terms)
+    {
+        if(this.one instanceof Literal)
+        {
+            Literal temp = (Literal) this.one;
+
+            if(terms.containsKey(temp.getName()))
+            {
+                try
+                {
+                    terms.get(temp.getName()).setValue(temp.evaluate());
+                }
+                catch(NotSolvableException e)
+                {
+                }
+            }
+            else
+            {
+                terms.put(temp.getName(), temp);
+            }
+
+            this.one = terms.get(temp.getName());
+        }
+        else
+        {
+            this.one.setTerms(terms);
+        }
     }
 }

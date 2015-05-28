@@ -9,10 +9,10 @@ import logic.operator.Disjunction;
 import logic.operator.Negation;
 import exception.NotSolvableException;
 
-public class Clause implements Logic
+public class Sentance implements Logic
 {
     HashSet<Logic> operators = new HashSet<Logic>();
-    HashMap<String, Term> terms = new HashMap<String, Term>();
+    HashMap<String, Literal> literals = new HashMap<String, Literal>();
     String clause;
 
     /**
@@ -20,10 +20,9 @@ public class Clause implements Logic
      * @param clause
      *            string containing no spaces of a clause (many terms)
      */
-    public Clause(String clause)
+    public Sentance(String clause)
     {
         this.clause = clause;
-        this.findTerms();
 
         int neutralPos1 = this.findBracketNeutrality(this.trimOuterBrackets(clause));
 
@@ -51,18 +50,18 @@ public class Clause implements Logic
         }
         else
         {
-            Term t = null;
+            Literal t = null;
             if(!clause.startsWith("~"))
             {
-                t = new Term(clause);
+                t = new Literal(clause);
                 t.setValue(true);
             }
             else
-            {// TODO: make sure it is actually a term (I think not always)
+            {
                 Negation not = new Negation(clause.substring(1));
-                if(not.getOne() instanceof Term)
+                if(not.getOne() instanceof Literal)
                 {
-                    t = (Term) not.getOne();
+                    t = (Literal) not.getOne();
                     t.setValue(false);
                 }
                 else
@@ -71,13 +70,13 @@ public class Clause implements Logic
                 }
             }
 
-            if(!this.terms.containsKey(t.getName()))
+            if(!this.literals.containsKey(t.getName()))
             {
-                this.terms.put(t.getName(), t);
+                this.literals.put(t.getName(), t);
             }
             else
             {
-                Term t1 = this.terms.get(t.getName());
+                Literal t1 = this.literals.get(t.getName());
                 try
                 {
                     t1.setValue(t.evaluate());
@@ -90,25 +89,9 @@ public class Clause implements Logic
         }
     }
 
-    private void findTerms()
+    public HashMap<String, Literal> getTerms()
     {
-        String terms = this.clause.replaceAll("<=>", ",");
-        terms = terms.replaceAll("=>", ",");
-        terms = terms.replaceAll("\\|", ",");
-        terms = terms.replaceAll("&", ",");
-        terms = terms.replaceAll("\\(", "");
-        terms = terms.replaceAll("\\)", "");
-        terms = terms.replaceAll("~", "");
-
-        for(String term : terms.split(","))
-        {
-            this.terms.put(term, new Term(term));
-        }
-    }
-
-    public HashMap<String, Term> getTerms()
-    {
-        return this.terms;
+        return this.literals;
     }
 
     @Override
@@ -121,7 +104,7 @@ public class Clause implements Logic
     @Override
     public boolean canSolve()
     {
-        for(Term t : this.terms.values())
+        for(Literal t : this.literals.values())
         {
             if(!t.canSolve())
             {
@@ -138,5 +121,40 @@ public class Clause implements Logic
         }
 
         return true;
+    }
+
+    @Override
+    public void setTerms(HashMap<String, Literal> terms)
+    {
+        for(Literal lit : this.literals.values())
+        {
+            if(terms.containsKey(lit.getName()))
+            {
+                Literal temp = terms.get(lit.getName());
+                if(!temp.canSolve())
+                {
+                    try
+                    {
+                        temp.setValue(lit.evaluate());
+                    }
+                    catch(NotSolvableException e)
+                    {
+                    }
+                }
+
+                lit = temp;
+            }
+            else
+            {
+                terms.put(lit.getName(), lit);
+            }
+        }
+
+        this.literals = terms;
+
+        for(Logic op : this.operators)
+        {
+            op.setTerms(terms);
+        }
     }
 }

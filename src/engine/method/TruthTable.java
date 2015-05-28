@@ -3,13 +3,13 @@ package engine.method;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import logic.Clause;
-import logic.Term;
+import logic.Sentance;
+import logic.Literal;
 
 public class TruthTable implements SolveMethod
 {
 
-    public TruthTable(LinkedList<Clause> clauseList, HashMap<String, Term> literals)
+    public TruthTable(LinkedList<Sentance> clauseList, HashMap<String, Literal> literals)
     {
         // TODO Auto-generated constructor stub
     }

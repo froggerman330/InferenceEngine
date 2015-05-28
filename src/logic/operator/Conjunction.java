@@ -1,7 +1,9 @@
 package logic.operator;
 
+import java.util.HashMap;
+
+import logic.Literal;
 import logic.Logic;
-import logic.Term;
 import exception.NotSolvableException;
 
 /**
@@ -47,7 +49,7 @@ public class Conjunction implements Logic
         {
             if(!firstTerm.startsWith("~"))
             {
-                this.one = new Term(firstTerm);
+                this.one = new Literal(firstTerm);
             }
             else
             {
@@ -81,7 +83,7 @@ public class Conjunction implements Logic
         {
             if(!secondTerm.startsWith("~"))
             {
-                this.two = new Term(secondTerm);
+                this.two = new Literal(secondTerm);
             }
             else
             {
@@ -121,5 +123,61 @@ public class Conjunction implements Logic
     public boolean canSolve()
     {
         return this.one.canSolve() && this.two.canSolve();
+    }
+
+    @Override
+    public void setTerms(HashMap<String, Literal> terms)
+    {
+        if(this.one instanceof Literal)
+        {
+            Literal temp = (Literal) this.one;
+
+            if(terms.containsKey(temp.getName()))
+            {
+                try
+                {
+                    terms.get(temp.getName()).setValue(temp.evaluate());
+                }
+                catch(NotSolvableException e)
+                {
+                }
+            }
+            else
+            {
+                terms.put(temp.getName(), temp);
+            }
+
+            this.one = terms.get(temp.getName());
+        }
+        else
+        {
+            this.one.setTerms(terms);
+        }
+
+        if(this.two instanceof Literal)
+        {
+            Literal temp = (Literal) this.two;
+
+            if(terms.containsKey(temp.getName()))
+            {
+                try
+                {
+                    terms.get(temp.getName()).setValue(temp.evaluate());
+                }
+                catch(NotSolvableException e)
+                {
+                }
+            }
+            else
+            {
+                terms.put(temp.getName(), temp);
+            }
+
+            this.two = terms.get(temp.getName());
+        }
+        else
+        {
+            this.two.setTerms(terms);
+        }
     }
 }

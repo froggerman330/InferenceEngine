@@ -1,15 +1,16 @@
 package logic;
 
+import java.util.HashMap;
+
 import exception.NotSolvableException;
 
-
-public class Term implements Logic
+public class Literal implements Logic
 {
     private boolean value;
     private boolean canSolve = false;
     private String name;
 
-    public Term(String name)
+    public Literal(String name)
     {
         this.name = name;
     }
@@ -40,5 +41,11 @@ public class Term implements Logic
     public boolean canSolve()
     {
         return this.canSolve;
+    }
+
+    @Override
+    public void setTerms(HashMap<String, Literal> terms)
+    {
+
     }
 }
