@@ -12,7 +12,7 @@ public class Infer
     public static void main(String... args)
     {
         LinkedList<Clause> clauseList = new LinkedList<Clause>();
-        HashMap<String, Term> terms = new HashMap<String, Term>();
+        HashMap<String, Term> literals = new HashMap<String, Term>();
 
         // 0 method
         // 1 file
@@ -39,13 +39,13 @@ public class Infer
             {
                 Term t = cTerm.get(key);
 
-                if(!terms.containsKey(key))
+                if(!literals.containsKey(key))
                 {
-                    terms.put(t.getName(), t);
+                    literals.put(t.getName(), t);
                 }// does not contain actual knowns.
                 else
                 {
-                    Term t1 = terms.get(key);
+                    Term t1 = literals.get(key);
                     try
                     {
                         t1.setValue(t1.evaluate());
@@ -65,7 +65,8 @@ public class Infer
             }
         }// all terms are now in terms and have their values if any are given.
 
+        literals.get("p3").setValue(true);
         // clause
-
+        System.out.println("");
     }
 }
