@@ -117,5 +117,10 @@ public interface Logic
         return -1;
     }
 
+    /**
+     * Set the literals of all following logic operators to be from the same group.
+     * 
+     * @param terms
+     */
     public void setTerms(HashMap<String, Literal> terms);
 }
