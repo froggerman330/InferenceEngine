@@ -43,13 +43,13 @@ public class Infer
         switch(args[0])
         {
             case "TT":
-                method = new TruthTable(sentanceList, literals);
+                method = new TruthTable(sentanceList, literals, ask);
                 break;
             case "FC":
-                method = new ForwardChaining(sentanceList, literals);
+                method = new ForwardChaining(sentanceList, literals, ask);
                 break;
             case "BC":
-                method = new BackwardChaining(sentanceList, literals);
+                method = new BackwardChaining(sentanceList, literals, ask);
         }
     }
 }

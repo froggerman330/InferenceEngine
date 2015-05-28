@@ -3,21 +3,25 @@ package engine.method;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import logic.Sentance;
 import logic.Literal;
+import logic.Sentance;
 
 public class TruthTable implements SolveMethod
 {
+    private HashMap<String, Literal> literals;
+    private LinkedList<Sentance> sentances;
+    private String ask;
 
-    public TruthTable(LinkedList<Sentance> clauseList, HashMap<String, Literal> literals)
+    public TruthTable(LinkedList<Sentance> clauseList, HashMap<String, Literal> literals, String ask)
     {
-        // TODO Auto-generated constructor stub
+        this.literals = literals;
+        this.sentances = clauseList;
+        this.ask = ask;
     }
 
     @Override
     public void solve()
     {
-        // TODO Auto-generated method stub
 
     }
 
