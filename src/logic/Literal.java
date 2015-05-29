@@ -1,6 +1,7 @@
 package logic;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import exception.NotSolvableException;
 
@@ -24,6 +25,14 @@ public class Literal implements Logic
     public String getName()
     {
         return this.name;
+    }
+
+    @Override
+    public LinkedList<Logic> getLogic()
+    {
+        LinkedList<Logic> allLogic = new LinkedList<Logic>();
+        allLogic.add(this);
+        return allLogic;
     }
 
     @Override

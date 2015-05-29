@@ -1,6 +1,7 @@
 package logic;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import exception.NotSolvableException;
 
@@ -14,6 +15,8 @@ public interface Logic
     public boolean evaluate() throws NotSolvableException;
 
     public boolean canSolve();
+
+    public LinkedList<Logic> getLogic();
 
     /**
      * Takes a clause string and finds the first piece of logic outside of any brackets and returns the start location

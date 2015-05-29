@@ -22,7 +22,6 @@ public class BackwardChaining implements SolveMethod
     @Override
     public void solve()
     {
-        // TODO Auto-generated method stub
 
     }
 

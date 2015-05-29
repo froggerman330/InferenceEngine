@@ -1,18 +1,20 @@
 package logic;
 
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedList;
 
 import logic.operator.Biconditional;
 import logic.operator.Conditional;
 import logic.operator.Conjunction;
 import logic.operator.Disjunction;
 import logic.operator.Negation;
+import logic.operator.Operator;
 import exception.NotSolvableException;
 
 public class Sentence implements Logic
 {
-    HashSet<Logic> operators = new HashSet<Logic>();
+    Logic premise, conclusion;
+    LinkedList<Operator> operators = new LinkedList<Operator>();
     Literal literal;
     String sentance;
 
@@ -29,24 +31,34 @@ public class Sentence implements Logic
 
         if(neutralPos1 != -1)
         {
+            Operator o = null;
             switch(sentence.charAt(neutralPos1))
             {
                 case '&':
-                    this.operators.add(new Conjunction(sentence.substring(0, neutralPos1), sentence
-                            .substring(neutralPos1 + 1)));
+                    o = new Conjunction(sentence.substring(0, neutralPos1), sentence.substring(neutralPos1 + 1));
+                    this.operators.add(o);
                     break;
                 case '|':
-                    this.operators.add(new Disjunction(sentence.substring(0, neutralPos1), sentence
-                            .substring(neutralPos1 + 1)));
+                    o = new Disjunction(sentence.substring(0, neutralPos1), sentence.substring(neutralPos1 + 1));
+                    this.operators.add(o);
                     break;
                 case '<':
-                    this.operators.add(new Biconditional(sentence.substring(0, neutralPos1), sentence
-                            .substring(neutralPos1 + 3)));
+                    o = new Biconditional(sentence.substring(0, neutralPos1), sentence.substring(neutralPos1 + 3));
+                    this.operators.add(o);
                     break;
                 case '=':
-                    this.operators.add(new Conditional(sentence.substring(0, neutralPos1), sentence
-                            .substring(neutralPos1 + 2)));
+                    o = new Conditional(sentence.substring(0, neutralPos1), sentence.substring(neutralPos1 + 2));
+                    this.operators.add(o);
                     break;
+            }
+
+            if(this.premise == null)
+            {
+                this.premise = o;
+            }
+            else
+            {
+                this.conclusion = o;
             }
         }
         else
@@ -59,7 +71,7 @@ public class Sentence implements Logic
             }
             else
             {
-                Negation not = new Negation(sentence.substring(1));
+                Operator not = new Negation(sentence.substring(1));
                 if(not.getOne() instanceof Literal)
                 {
                     t = (Literal) not.getOne();
@@ -72,7 +84,40 @@ public class Sentence implements Logic
             }
 
             this.literal = t;
+
+            if(this.premise == null)
+            {
+                this.premise = t;
+            }
+            else
+            {
+                this.conclusion = t;
+            }
         }
+    }
+
+    public LinkedList<Logic> getPremise()
+    {
+        return this.premise.getLogic();
+    }
+
+    public LinkedList<Logic> getConclusion()
+    {
+        return this.conclusion.getLogic();
+    }
+
+    @Override
+    public LinkedList<Logic> getLogic()
+    {
+        LinkedList<Logic> allLogic = new LinkedList<Logic>();
+        for(Logic l : this.operators)
+        {
+            allLogic.addAll(l.getLogic());
+        }
+
+        allLogic.add(this.literal);
+
+        return allLogic;
     }
 
     @Override

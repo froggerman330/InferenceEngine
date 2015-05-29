@@ -1,6 +1,7 @@
 package logic.operator;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import logic.Literal;
 import logic.Logic;
@@ -12,7 +13,7 @@ import exception.NotSolvableException;
  * @author Devon
  *
  */
-public class Conjunction implements Logic
+public class Conjunction implements Operator
 {
     private Logic one, two;
 
@@ -183,5 +184,14 @@ public class Conjunction implements Logic
         }
 
         return tempTerms;
+    }
+
+    @Override
+    public LinkedList<Logic> getLogic()
+    {
+        LinkedList<Logic> allLogic = new LinkedList<Logic>();
+        allLogic.addAll(this.one.getLogic());
+        allLogic.addAll(this.two.getLogic());
+        return allLogic;
     }
 }
