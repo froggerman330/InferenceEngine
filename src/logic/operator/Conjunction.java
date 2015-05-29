@@ -187,11 +187,11 @@ public class Conjunction implements Operator
     }
 
     @Override
-    public LinkedList<Logic> getLogic()
+    public LinkedList<Literal> getLiterals()
     {
-        LinkedList<Logic> allLogic = new LinkedList<Logic>();
-        allLogic.addAll(this.one.getLogic());
-        allLogic.addAll(this.two.getLogic());
+        LinkedList<Literal> allLogic = new LinkedList<Literal>();
+        allLogic.addAll(this.one.getLiterals());
+        allLogic.addAll(this.two.getLiterals());
         return allLogic;
     }
 }

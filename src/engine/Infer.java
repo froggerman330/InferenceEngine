@@ -10,6 +10,12 @@ import engine.method.ForwardChaining;
 import engine.method.SolveMethod;
 import engine.method.TruthTable;
 
+/**
+ * The main class of the Inference engine takes some sentences and figures out logical conclusions from them.
+ * 
+ * @author Devon
+ *
+ */
 public class Infer
 {
     public static void main(String... args)

@@ -26,8 +26,8 @@ public class Biconditional implements Operator
      */
     public Biconditional(String first, String second)
     {
-        String firstTerm = this.trimOuterBrackets(first);
-        String secondTerm = this.trimOuterBrackets(second);
+        String firstTerm = this.trimOuterBrackets(first + "=>" + second);
+        String secondTerm = this.trimOuterBrackets(second + "=>" + first);
         int neutralPos1 = this.findBracketNeutrality(firstTerm);
         int neutralPos2 = this.findBracketNeutrality(secondTerm);
 
@@ -48,7 +48,7 @@ public class Biconditional implements Operator
                             firstTerm.substring(neutralPos1 + 3));
                     break;
                 case '=':
-                    this.one = new Biconditional(firstTerm.substring(0, neutralPos1),
+                    this.one = new Conditional(firstTerm.substring(0, neutralPos1),
                             firstTerm.substring(neutralPos1 + 2));
                     break;
             }
@@ -121,7 +121,7 @@ public class Biconditional implements Operator
     {
         if(this.canSolve())
         {
-            boolean value = !(this.one.evaluate() ^ this.two.evaluate());
+            boolean value = this.one.evaluate() && this.two.evaluate();
             return value;
         }
 
@@ -194,11 +194,11 @@ public class Biconditional implements Operator
     }
 
     @Override
-    public LinkedList<Logic> getLogic()
+    public LinkedList<Literal> getLiterals()
     {
-        LinkedList<Logic> allLogic = new LinkedList<Logic>();
-        allLogic.addAll(this.one.getLogic());
-        allLogic.addAll(this.two.getLogic());
+        LinkedList<Literal> allLogic = new LinkedList<Literal>();
+        allLogic.addAll(this.one.getLiterals());
+        allLogic.addAll(this.two.getLiterals());
         return allLogic;
     }
 }

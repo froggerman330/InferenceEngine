@@ -52,14 +52,8 @@ public class Sentence implements Logic
                     break;
             }
 
-            if(this.premise == null)
-            {
-                this.premise = o;
-            }
-            else
-            {
-                this.conclusion = o;
-            }
+            this.premise = o.getOne();
+            this.conclusion = o.getTwo();
         }
         else
         {
@@ -84,35 +78,31 @@ public class Sentence implements Logic
             }
 
             this.literal = t;
-
-            if(this.premise == null)
-            {
-                this.premise = t;
-            }
-            else
-            {
-                this.conclusion = t;
-            }
         }
     }
 
-    public LinkedList<Logic> getPremise()
+    public String getSentence()
     {
-        return this.premise.getLogic();
+        return this.sentance;
     }
 
-    public LinkedList<Logic> getConclusion()
+    public LinkedList<Literal> getPremise()
     {
-        return this.conclusion.getLogic();
+        return this.premise.getLiterals();
+    }
+
+    public LinkedList<Literal> getConclusion()
+    {
+        return this.conclusion.getLiterals();
     }
 
     @Override
-    public LinkedList<Logic> getLogic()
+    public LinkedList<Literal> getLiterals()
     {
-        LinkedList<Logic> allLogic = new LinkedList<Logic>();
+        LinkedList<Literal> allLogic = new LinkedList<Literal>();
         for(Logic l : this.operators)
         {
-            allLogic.addAll(l.getLogic());
+            allLogic.addAll(l.getLiterals());
         }
 
         allLogic.add(this.literal);
@@ -188,6 +178,14 @@ public class Sentence implements Logic
         for(Logic op : this.operators)
         {
             tempTerms.putAll(op.setTerms(tempTerms));
+
+        }
+
+        if(!(this.premise instanceof Literal) && !(this.conclusion instanceof Literal)
+                && (this.conclusion != null && this.premise != null))
+        {
+            tempTerms.putAll(this.premise.setTerms(tempTerms));
+            tempTerms.putAll(this.conclusion.setTerms(tempTerms));
         }
 
         return tempTerms;

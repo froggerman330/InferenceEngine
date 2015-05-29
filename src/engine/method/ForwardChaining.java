@@ -10,13 +10,13 @@ import exception.NotSolvableException;
 public class ForwardChaining implements SolveMethod
 {
     private HashMap<String, Literal> literals;
-    private LinkedList<Sentence> sentances;
+    private LinkedList<Sentence> sentences;
     private String ask;
 
     public ForwardChaining(LinkedList<Sentence> clauseList, HashMap<String, Literal> literals, String ask)
     {
         this.literals = literals;
-        this.sentances = clauseList;
+        this.sentences = clauseList;
         this.ask = ask;
     }
 
@@ -25,6 +25,7 @@ public class ForwardChaining implements SolveMethod
     {
         LinkedList<Literal> agenda = new LinkedList<Literal>();
         HashMap<Sentence, Integer> premiseCount = new HashMap<Sentence, Integer>();
+        StringBuilder solution = new StringBuilder();
 
         for(Literal l : this.literals.values())
         {
@@ -32,7 +33,7 @@ public class ForwardChaining implements SolveMethod
             {
                 if(l.evaluate())
                 {
-                    agenda.push(l);
+                    agenda.addLast(l);
                 }
             }
             catch(NotSolvableException e)
@@ -41,38 +42,51 @@ public class ForwardChaining implements SolveMethod
             }
         }
 
-        for(Sentence sen : this.sentances)
+        for(Sentence sen : this.sentences)
         {
-            premiseCount.put(sen, sen.getPremise().size());
+            if(sen.getLiterals().size() != 1)
+            {
+                premiseCount.put(sen, sen.getPremise().size());
+            }
         }
 
         while(!agenda.isEmpty())
         {
             Literal p = agenda.pop();
-            if(p.getName() == this.ask)
+            solution.append(p.getName() + ", ");
+            if(p.getName().equalsIgnoreCase(this.ask))
             {
-                printSolution();
+                System.out.println(solution.substring(0, solution.length() - 2));
+                return;
             }
 
-            for(Sentence s : this.sentances)
+            for(Sentence s : this.sentences)
             {
-                if(s.getPremise().contains(p))
+                if(s.getLiterals().size() != 1)
                 {
-                    int temp = premiseCount.get(s);
-                    premiseCount.put(s, temp--);
-                }
+                    if(s.getPremise().contains(p))
+                    {
+                        int temp = premiseCount.get(s) - 1;
+                        premiseCount.put(s, temp);
+                    }
 
-                if(premiseCount.get(s) == 0)
-                {
+                    if(premiseCount.get(s) == 0)
+                    {
+                        for(Literal lit : s.getConclusion())
+                        {
+                            if(!agenda.contains(lit))
+                            {
+                                agenda.addLast(lit);
+                            }
+                        }
 
+                        int temp = premiseCount.get(s) - 1;
+                        premiseCount.put(s, temp);
+                    }
                 }
             }
         }
+
+        System.out.println("No solution found!");
     }
-
-    private void printSolution()
-    {
-
-    }
-
 }

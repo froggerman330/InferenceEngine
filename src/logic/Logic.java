@@ -16,7 +16,7 @@ public interface Logic
 
     public boolean canSolve();
 
-    public LinkedList<Logic> getLogic();
+    public LinkedList<Literal> getLiterals();
 
     /**
      * Takes a clause string and finds the first piece of logic outside of any brackets and returns the start location

@@ -39,7 +39,7 @@ public class Negation implements Logic, Operator
                             firstTerm.substring(neutralPos1 + 3));
                     break;
                 case '=':
-                    this.one = new Biconditional(firstTerm.substring(0, neutralPos1),
+                    this.one = new Conditional(firstTerm.substring(0, neutralPos1),
                             firstTerm.substring(neutralPos1 + 2));
                     break;
             }
@@ -116,10 +116,10 @@ public class Negation implements Logic, Operator
     }
 
     @Override
-    public LinkedList<Logic> getLogic()
+    public LinkedList<Literal> getLiterals()
     {
-        LinkedList<Logic> allLogic = new LinkedList<Logic>();
-        allLogic.addAll(this.one.getLogic());
+        LinkedList<Literal> allLogic = new LinkedList<Literal>();
+        allLogic.addAll(this.one.getLiterals());
         return allLogic;
     }
 

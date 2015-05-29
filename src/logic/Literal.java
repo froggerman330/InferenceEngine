@@ -28,9 +28,9 @@ public class Literal implements Logic
     }
 
     @Override
-    public LinkedList<Logic> getLogic()
+    public LinkedList<Literal> getLiterals()
     {
-        LinkedList<Logic> allLogic = new LinkedList<Logic>();
+        LinkedList<Literal> allLogic = new LinkedList<Literal>();
         allLogic.add(this);
         return allLogic;
     }
@@ -56,5 +56,11 @@ public class Literal implements Logic
     public HashMap<String, Literal> setTerms(HashMap<String, Literal> terms)
     {
         return null;
+    }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        return ((Literal) o).getName().equalsIgnoreCase(this.getName());
     }
 }
