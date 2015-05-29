@@ -56,7 +56,7 @@ public class ForwardChaining implements SolveMethod
             solution.append(p.getName() + ", ");
             if(p.getName().equalsIgnoreCase(this.ask))
             {
-                System.out.println(solution.substring(0, solution.length() - 2));
+                System.out.println("YES: " + solution.substring(0, solution.length() - 2));
                 return;
             }
 
