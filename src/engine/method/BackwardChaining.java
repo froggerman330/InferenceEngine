@@ -24,9 +24,9 @@ public class BackwardChaining implements SolveMethod
     public void solve()
     {
         LinkedList<Literal> agenda = new LinkedList<Literal>();
-        HashMap<Sentence, Integer> conclusionCount = new HashMap<Sentence, Integer>();
+        LinkedList<Literal> knowns = new LinkedList<Literal>();
+        // LinkedList<Literal> solution = new LinkedList<Literal>();
         StringBuilder solution = new StringBuilder();
-        HashMap<Literal, Boolean> starters = new HashMap<Literal, Boolean>();
 
         for(Literal l : this.literals.values())
         {
@@ -34,12 +34,11 @@ public class BackwardChaining implements SolveMethod
             {
                 if(l.evaluate())
                 {
-                    starters.put(l, false);
+                    knowns.add(l);
                 }
             }
             catch(NotSolvableException e)
             {
-                // do nothing
             }
 
             if(l.equals(new Literal(this.ask)))
@@ -48,58 +47,45 @@ public class BackwardChaining implements SolveMethod
             }
         }
 
-        for(Sentence sen : this.sentences)
-        {
-            if(sen.getLiterals().size() != 1)
-            {
-                conclusionCount.put(sen, sen.getConclusion().size());
-            }
-        }
-
         while(!agenda.isEmpty())
         {
             Literal p = agenda.pop();
             solution.insert(0, p.getName() + ", ");
+            // solution.add(p);
 
-            for(Literal starter : starters.keySet())
+            if(!knowns.contains(p))
             {
-                if(!starters.get(starter))
+                for(Sentence s : this.sentences)
                 {
-                    if(p.equals(starter))
+                    if(s.getLiterals().size() > 1)
                     {
-                        System.out.println("YES: " + solution.substring(0, solution.length() - 2));
-                        return;
-                    }
-                }
-            }
-
-            for(Sentence s : this.sentences)
-            {
-                if(s.getLiterals().size() != 1)
-                {
-                    if(s.getConclusion().contains(p))
-                    {
-                        int temp = conclusionCount.get(s) - 1;
-                        conclusionCount.put(s, temp);
-                    }
-
-                    if(conclusionCount.get(s) == 0)
-                    {
-                        for(Literal lit : s.getPremise())
+                        if(s.getConclusion().contains(p))
                         {
-                            if(!agenda.contains(lit))
+                            if(s.getPremise().size() == 0)
                             {
-                                agenda.addLast(lit);
+                                System.out.println("No Solution Found!");
+                                return;
+                            }
+                            else
+                            {
+                                for(Literal lit : s.getPremise())
+                                {
+                                    if(!agenda.contains(lit))
+                                    {
+                                        agenda.add(lit);
+                                    }
+                                }
                             }
                         }
-
-                        int temp = conclusionCount.get(s) - 1;
-                        conclusionCount.put(s, temp);
                     }
                 }
             }
+            // get parents on stack
+            // peek stack (if given literal, move to end)
+            // if stack empty, solution not found
+            // if stack contains only given literals, solution!
         }
 
-        System.out.println("No solution found!");
+        System.out.print("YES: " + solution.substring(0, solution.length() - 2));
     }
 }
