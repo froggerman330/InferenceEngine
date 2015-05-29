@@ -1,0 +1,5 @@
+TELL
+P=>Q; L&M=>P; B&L=>M; A&P=>L; A&B=>L; A; B;
+ASK
+Q
+
