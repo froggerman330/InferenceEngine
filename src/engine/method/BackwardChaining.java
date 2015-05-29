@@ -25,7 +25,7 @@ public class BackwardChaining implements SolveMethod
     {
         LinkedList<Literal> agenda = new LinkedList<Literal>();
         LinkedList<Literal> knowns = new LinkedList<Literal>();
-        // LinkedList<Literal> solution = new LinkedList<Literal>();
+        LinkedList<Literal> history = new LinkedList<Literal>();
         StringBuilder solution = new StringBuilder();
 
         for(Literal l : this.literals.values())
@@ -50,6 +50,7 @@ public class BackwardChaining implements SolveMethod
         while(!agenda.isEmpty())
         {
             Literal p = agenda.pop();
+            history.add(p);
             solution.insert(0, p.getName() + ", ");
             // solution.add(p);
 
@@ -61,16 +62,18 @@ public class BackwardChaining implements SolveMethod
                     {
                         if(s.getConclusion().contains(p))
                         {
-                            if(s.getPremise().size() == 0)
+                            LinkedList<Literal> temp = s.getPremise();
+                            temp.removeAll(agenda);
+                            if(temp.size() == 0)
                             {
                                 System.out.println("No Solution Found!");
                                 return;
                             }
                             else
                             {
-                                for(Literal lit : s.getPremise())
+                                for(Literal lit : temp)
                                 {
-                                    if(!agenda.contains(lit))
+                                    if(!history.contains(lit))
                                     {
                                         agenda.add(lit);
                                     }
