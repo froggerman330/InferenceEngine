@@ -22,7 +22,7 @@ public class Infer
      * The main method, takes the solving method and the file name.
      * 
      * @param args
-     *            <i>0)</i> the solving method (TT,FC,BC). <br />
+     *            <i>0)</i> the solving method (TT,FC,BC). <br>
      *            <i>1)</i> the path to file.
      */
     public static void main(String... args)

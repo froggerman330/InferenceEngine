@@ -9,19 +9,17 @@ import logic.Sentence;
 /**
  * The backward chaining solve method. Takes all literals known, all sentences known and the literal being asked for.
  * Adds ask to the agenda. Pops the agenda and adds that to history and the solution string. If it's not one of our
- * knowns, get all sentences with it in the conclusion, gets all the premises of those and,
+ * knowns, get all sentences with it in the conclusion, gets all the premises of those and if they're not in the history
+ * or the agenda, adds them to the agenda. If it has nothing to add it means that no solution can be found. When the
+ * agenda is empty, the solution is printed to the console.
  * 
  * @author Devon
  *
  */
-public class BackwardChaining implements SolveMethod
+public class BackwardChaining extends SolveMethod
 {
-    private HashMap<String, Literal> literals;
-    private LinkedList<Sentence> sentences;
-    private String ask;
-
     /**
-     * The constructor for the backward chaining solution. Assigns values for the literals, sentences and the ask.
+     * The constructor for the backward chaining solution. Assigns values for all the literals, sentences and the ask.
      * 
      * @param sentences
      *            all sentences to use with backward chaining.
@@ -78,7 +76,7 @@ public class BackwardChaining implements SolveMethod
                         LinkedList<Literal> temp = s.getPremise().getLiterals();
                         temp.removeAll(history);
                         if(temp.size() == 0)
-                        {// if premise only contains things on the agenda
+                        {// if premise only contains things already looked at then no solution is going to be found.
                             System.out.println("No Solution Found!");
                             return;
                         }
@@ -87,7 +85,7 @@ public class BackwardChaining implements SolveMethod
                             for(Literal lit : temp)
                             {
                                 if(!(agenda.contains(lit)))
-                                {
+                                {// if it's not on the agenda, add it to the agenda.
                                     agenda.add(lit);
                                 }
                             }

@@ -189,7 +189,7 @@ public class Sentence implements Operator
             }
         }
 
-        for(Logic op : this.operators)
+        for(Operator op : this.operators)
         {
             tempTerms.putAll(op.setTerms(tempTerms));
 
