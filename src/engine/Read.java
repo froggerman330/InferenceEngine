@@ -100,13 +100,34 @@ public class Read
     private static String addBrackets(String str)
     {
         String s = str.trim();
-        int neutralPos = 0, bracketAt = -1;
+        int neutralPos = 0, bracketAt = -1, logic = 0;
         boolean isLogic = false, needBracket = false, goBack = true;
 
-        goBack = true;
-        needBracket = false;
-        bracketAt = -1;
-        neutralPos = 0;
+        for(int i = 0; i < s.toCharArray().length; i++)
+        {
+            char c = s.toCharArray()[i];
+            switch(c)
+            {
+                case '=':
+                    logic++;
+                    break;
+                case '&':
+                    logic++;
+                    break;
+                case '|':
+                    logic++;
+                case '<':
+                    logic++;
+                    i++; // skip = to not give false amounts of logic.
+                    break;
+            }
+        }
+
+        if(logic < 2)
+        {
+            return s;
+        }
+
         for(int i = 0; i < s.toCharArray().length; i++)
         {
             char d = s.toCharArray()[i];
@@ -146,17 +167,24 @@ public class Read
                             {
                                 case ')':
                                     // no bracket needed
-                                    goBack = false;
                                     i += 2;
+                                    break;
+                                case '&':
+                                case '|':
+                                case '>':
+                                    // end of logic piece, no bracket needed before this. There is a space where
+                                    // there shouldn't be. There may be a bracket needed after this though.
+                                    needBracket = true;
+                                    bracketAt = i;
                                     break;
                                 default:
                                     // add bracket, switch sides
                                     s = "(" + s.substring(0, i) + ")" + s.substring(i + 1);
-                                    goBack = false;
                                     i += 3;
                                     break;
                             }
                         }
+                        goBack = false;
                     }
                     else
                     {
