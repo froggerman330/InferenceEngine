@@ -81,23 +81,30 @@ public class Sentence implements Operator
         }
     }
 
-    public String getSentence()
-    {
-        return this.sentance;
-    }
-
+    /*
+     * (non-Javadoc)
+     * @see logic.operator.Operator#getPremise()
+     */
     @Override
     public Logic getPremise()
     {
         return this.premise;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see logic.operator.Operator#getConclusion()
+     */
     @Override
     public Logic getConclusion()
     {
         return this.conclusion;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see logic.Logic#getLiterals()
+     */
     @Override
     public LinkedList<Literal> getLiterals()
     {
@@ -112,6 +119,10 @@ public class Sentence implements Operator
         return allLogic;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see logic.Logic#evaluate()
+     */
     @Override
     public boolean evaluate() throws NotSolvableException
     {
@@ -129,6 +140,10 @@ public class Sentence implements Operator
         return value;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see logic.Logic#canSolve()
+     */
     @Override
     public boolean canSolve()
     {
@@ -148,6 +163,10 @@ public class Sentence implements Operator
         return true;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see logic.Logic#setTerms(java.util.HashMap)
+     */
     @Override
     public HashMap<String, Literal> setTerms(HashMap<String, Literal> terms)
     {
