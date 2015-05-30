@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 import logic.Literal;
-import logic.Sentence;
+import logic.operator.Sentence;
 import engine.method.BackwardChaining;
 import engine.method.ForwardChaining;
 import engine.method.SolveMethod;

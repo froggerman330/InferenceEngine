@@ -70,18 +70,18 @@ public class Literal implements Logic
         return this.value;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see logic.Logic#canSolve()
+    /**
+     * Checks to see if the value of this literal has been set yet.
+     * 
+     * @return <b>true</b> if the value of this literal has been set.
      */
-    @Override
-    public boolean canSolve()
+    public boolean canEvaluate()
     {
         return this.canSolve;
     }
 
     /*
-     * (non-Javadoc)
+     * (non-Javadoc) Compares the names of the literals instead of the objects.
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

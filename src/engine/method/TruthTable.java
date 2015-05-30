@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 import logic.Literal;
-import logic.Sentence;
+import logic.operator.Sentence;
 
 /**
  * The truth table solve method iterates through all variations of all literals and evaluates the sentences at each

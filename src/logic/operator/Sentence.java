@@ -1,35 +1,35 @@
-package logic;
+package logic.operator;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import logic.operator.Biconditional;
-import logic.operator.Conditional;
-import logic.operator.Conjunction;
-import logic.operator.Disjunction;
-import logic.operator.Negation;
-import logic.operator.Operator;
+import logic.Literal;
+import logic.Logic;
 
+/**
+ * A sentence is an operator that has many terms (which may also be operators).
+ * 
+ * @author Devon
+ *
+ */
 public class Sentence implements Operator
 {
     Logic premise, conclusion;
     LinkedList<Operator> operators = new LinkedList<Operator>();
     Literal literal;
-    String sentance;
 
     /**
      * 
      * @param sentence
-     *            string containing no spaces of a clause (many terms)
+     *            string containing the sentence (many terms and operations).
      */
     public Sentence(String sentence)
-    {
-        this.sentance = sentence;
-
+    {// gets the location of a bracket neutral logic symbol from a sentence that has had any outer brackets removed.
         int neutralPos1 = this.findBracketNeutrality(this.trimOuterBrackets(sentence));
 
         if(neutralPos1 != -1)
-        {
+        {// if there is a bracket neutral logic symbol split the sentence at the symbol and create a new Operator of the
+         // appropriate type with the two substrings.
             Operator o = null;
             switch(sentence.charAt(neutralPos1))
             {
@@ -55,28 +55,17 @@ public class Sentence implements Operator
             this.conclusion = o.getConclusion();
         }
         else
-        {
-            Literal t = null;
+        {// if no bracket neutral logic was found this sentence must be a literal or a bigger negation.
             if(!sentence.startsWith("~"))
-            {
-                t = new Literal(sentence);
-                t.setValue(true);
+            {// if the sentence isn't a negation it must be a literal.
+                this.literal = new Literal(sentence);
+                this.literal.setValue(true);
             }
             else
-            {
+            {// if it is a negation, create the negation and add it to the list of operations.
                 Operator not = new Negation(sentence.substring(1));
-                if(not.getPremise() instanceof Literal)
-                {
-                    t = (Literal) not.getPremise();
-                    t.setValue(false);
-                }
-                else
-                {
-                    this.operators.add(not);
-                }
+                this.operators.add(not);
             }
-
-            this.literal = t;
         }
     }
 
@@ -127,7 +116,7 @@ public class Sentence implements Operator
     {
         boolean value = true;
         if(this.literal != null)
-        {
+        {// if the sentence has a literal evaluate it.
             value &= this.literal.evaluate();
         }
 
@@ -141,29 +130,6 @@ public class Sentence implements Operator
 
     /*
      * (non-Javadoc)
-     * @see logic.Logic#canSolve()
-     */
-    @Override
-    public boolean canSolve()
-    {
-        if(!this.literal.canSolve())
-        {
-            return false;
-        }
-
-        for(Logic l : this.operators)
-        {
-            if(!l.canSolve())
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /*
-     * (non-Javadoc)
      * @see logic.Logic#setTerms(java.util.HashMap)
      */
     @Override
@@ -172,25 +138,26 @@ public class Sentence implements Operator
         HashMap<String, Literal> tempTerms = terms;
 
         if(this.literal != null)
-        {
+        {// if the sentence has a literal and therefore is only a literal.
             if(terms.containsKey(this.literal.getName()))
-            {
+            {// if the hashmap has the literal already get a copy of it.
                 Literal temp = tempTerms.get(this.literal.getName());
-                if(!temp.canSolve())
-                {
+                if(!temp.canEvaluate())
+                {// if you can't evaluate the literal from the map, set the value to the value of this literal (which
+                 // should be true).
                     temp.setValue(this.literal.evaluate());
                 }
-
+                // set this literal to be the literal from the hashmap.
                 this.literal = temp;
             }
             else
-            {
+            {// if the hashmap doesn't have this literal yet, add it to the hashmap.
                 tempTerms.put(this.literal.getName(), this.literal);
             }
         }
 
         for(Operator op : this.operators)
-        {
+        {// pass the terms up the chain to be updated in all sub-logic.
             tempTerms.putAll(op.setTerms(tempTerms));
 
         }

@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 import logic.Literal;
-import logic.Sentence;
+import logic.operator.Sentence;
 
 /**
  * Abstract solve method that holds all common information, a list of all literals and the letter that represents them,

@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 import logic.Literal;
-import logic.Sentence;
+import logic.operator.Sentence;
 
 /**
  * The backward chaining solve method. Takes all literals known, all sentences known and the literal being asked for.

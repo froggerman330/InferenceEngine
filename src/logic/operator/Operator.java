@@ -40,22 +40,23 @@ public interface Operator extends Logic
      * Takes a clause string and finds the first piece of logic outside of any brackets and returns the start location
      * within the string.
      * 
-     * @param clause
-     *            the clause to check for bracket neutral logic.
-     * @return an int representing the character position of the start of the logic symbol or -1 if no logic is found.
+     * @param sentence
+     *            the sentence to check for bracket neutral logic.
+     * @return an integer representing the character position of the start of the logic symbol that is not between
+     *         brackets or {@link logic.operator.Operator#findLogicSymbol(String) the location of the logic symbol}.
      */
-    default int findBracketNeutrality(String clause)
+    default int findBracketNeutrality(String sentence)
     {
         int bracketNeutrality = 0;
 
-        if(clause.startsWith("~"))
+        if(sentence.startsWith("~"))
         {
             return -1;
         }
 
-        for(int i = 0; i < clause.toCharArray().length; i++)
+        for(int i = 0; i < sentence.toCharArray().length; i++)
         {
-            char c = clause.toCharArray()[i];
+            char c = sentence.toCharArray()[i];
 
             if(c == '(')
             {
@@ -72,7 +73,7 @@ public interface Operator extends Logic
             }
         }
 
-        return findLogicSymbol(clause);
+        return findLogicSymbol(sentence);
     }
 
     /**
@@ -117,15 +118,15 @@ public interface Operator extends Logic
     /**
      * Returns the index of the first logic symbol contained in the string.
      * 
-     * @param clause
+     * @param sentence
      *            String of literals with logic operators.
      * @return index of first logic symbol or -1 if none exists.
      */
-    default int findLogicSymbol(String clause)
+    default int findLogicSymbol(String sentence)
     {
-        for(int i = 0; i < clause.toCharArray().length; i++)
+        for(int i = 0; i < sentence.toCharArray().length; i++)
         {
-            switch(clause.toCharArray()[i])
+            switch(sentence.toCharArray()[i])
             {
                 case '&':
                     return i;
