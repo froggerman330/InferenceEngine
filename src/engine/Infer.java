@@ -11,13 +11,20 @@ import engine.method.SolveMethod;
 import engine.method.TruthTable;
 
 /**
- * The main class of the Inference engine takes some sentences and figures out logical conclusions from them.
+ * The main class of the Inference engine takes some sentences and uses a method to solve for the asked literal.
  * 
  * @author Devon
  *
  */
 public class Infer
 {
+    /**
+     * The main method, takes the solving method and the file name.
+     * 
+     * @param args
+     *            <i>0)</i> the solving method (TT,FC,BC). <br />
+     *            <i>1)</i> the path to file.
+     */
     public static void main(String... args)
     {
         LinkedList<Sentence> sentanceList = new LinkedList<Sentence>();
@@ -28,8 +35,9 @@ public class Infer
         String[] readData = new Read(args[1]).getClauses();
         String ask = readData[0].toLowerCase();
         String[] sentances = new String[readData.length - 1];
+
         for(int i = 1; i < readData.length; i++)
-        {
+        {// skips the first item which is the asked literal
             sentances[i - 1] = readData[i];
         }
 
@@ -39,7 +47,7 @@ public class Infer
         }
 
         for(Sentence s : sentanceList)
-        {
+        {// updates all the literals used in all the logic to be the same objects.
             literals.putAll(s.setTerms(literals));
         }
 

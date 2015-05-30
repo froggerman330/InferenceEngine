@@ -16,6 +16,12 @@ public class Read
 {
     File toRead;
 
+    /**
+     * The constructor for the read object that sets the file to read from.
+     * 
+     * @param file
+     *            the file path to be read from.
+     */
     public Read(String file)
     {
 
@@ -23,6 +29,8 @@ public class Read
     }
 
     /**
+     * Reads the file and separates all the different pieces while checking a couple of key things about it.This will
+     * also insert brackets where necessary.
      * 
      * @return an array of strings, each with no spaces. Containing terms and logical operators.
      */
@@ -83,82 +91,101 @@ public class Read
         return null;
     }
 
+    /**
+     * Takes a string of a clause and adds a set of brackets if necessary
+     * 
+     * @param str
+     * @return
+     */
     private static String addBrackets(String str)
     {
         String s = str.trim();
-        char first = '&';
-        int logic = 0;
-        boolean bracketed = false;
+        int neutralPos = 0, bracketAt = -1;
+        boolean isLogic = false, needBracket = false, goBack = true;
 
+        goBack = true;
+        needBracket = false;
+        bracketAt = -1;
+        neutralPos = 0;
         for(int i = 0; i < s.toCharArray().length; i++)
         {
-            char c = s.toCharArray()[i];
-            switch(c)
+            char d = s.toCharArray()[i];
+            switch(d)
             {
                 case '&':
-                    logic++;
-                    if(logic == 1)
-                    {
-                        first = c;
-                    }
+                    isLogic = true;
                     break;
                 case '|':
-                    logic++;
-                    if(logic == 1)
-                    {
-                        first = c;
-                    }
+                    isLogic = true;
                     break;
                 case '<':
-                    logic++;
-                    if(logic == 1)
-                    {
-                        first = c;
-                    }
-                    i++;
+                    isLogic = true;
                     break;
                 case '=':
-                    logic++;
-                    if(logic == 1)
-                    {
-                        first = c;
-                    }
+                    isLogic = true;
                     break;
-            }
-        }
-
-        if(logic > 1)
-        { // more than 1 logic symbol, need to add brackets.
-            for(int j = 0; j < s.toCharArray().length; j++)
-            {
-                char d = s.toCharArray()[j];
-                if(d == ' ')
-                {
-                    if(j > s.indexOf(first))
+                case '(':
+                    neutralPos++;
+                    break;
+                case ')':
+                    neutralPos--;
+                    break;
+                case ' ':
+                    if(neutralPos != 0)
                     {
-                        if(!bracketed)
+                        System.out.println("There is an error with the input. There must be no spaces inside brackets");
+                        System.exit(1);
+                    }
+
+                    if(goBack)
+                    {
+                        if(isLogic)
                         {
-                            String[] ss = s.split(Character.toString(s.charAt(j)), 2);
-                            s = "(" + ss[0] + ")" + ss[1];
-                            bracketed = true;
+                            char e = s.toCharArray()[i - 1];
+                            switch(e)
+                            {
+                                case ')':
+                                    // no bracket needed
+                                    goBack = false;
+                                    i += 2;
+                                    break;
+                                default:
+                                    // add bracket, switch sides
+                                    s = "(" + s.substring(0, i) + ")" + s.substring(i + 1);
+                                    goBack = false;
+                                    i += 3;
+                                    break;
+                            }
                         }
                     }
-                    else if(!bracketed)
+                    else
                     {
-                        switch(first)
+                        char f = s.toCharArray()[i + 1];
+                        switch(f)
                         {
-                            case '<':
-                                j += 4;
+                            case '(':
+                                // no bracket needed
                                 break;
-                            case '=':
-                                j += 3;
+                            default:
+                                // may need to bracket
+                                needBracket = true;
+                                bracketAt = i;
                                 break;
                         }
-
-                        s = s.substring(0, j) + "(" + s.substring(j, s.length()) + ")";
-                        bracketed = true;
                     }
-                }
+
+                    isLogic = false;
+                    break;
+                default:
+                    if(i == (s.toCharArray().length - 1) && bracketAt > 0)
+                    {
+                        if(isLogic && needBracket)
+                        {
+                            s = s.substring(0, bracketAt) + "(" + s.substring(bracketAt + 1) + ")";
+                            neutralPos++;
+                            i++;
+                        }
+                    }
             }
         }
 
