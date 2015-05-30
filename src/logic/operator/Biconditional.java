@@ -82,7 +82,7 @@ public class Biconditional implements Operator
                             secondTerm.substring(neutralPos2 + 3));
                     break;
                 case '=':
-                    this.two = new Biconditional(secondTerm.substring(0, neutralPos2),
+                    this.two = new Conditional(secondTerm.substring(0, neutralPos2),
                             secondTerm.substring(neutralPos2 + 2));
                     break;
             }
@@ -103,6 +103,7 @@ public class Biconditional implements Operator
     /**
      * @return the first logical term
      */
+    @Override
     public Logic getOne()
     {
         return this.one;
@@ -111,6 +112,7 @@ public class Biconditional implements Operator
     /**
      * @return the second logical term
      */
+    @Override
     public Logic getTwo()
     {
         return this.two;
