@@ -3,8 +3,6 @@ package logic;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import exception.NotSolvableException;
-
 public class Literal implements Logic
 {
     private boolean value;
@@ -36,14 +34,9 @@ public class Literal implements Logic
     }
 
     @Override
-    public boolean evaluate() throws NotSolvableException
+    public boolean evaluate()
     {
-        if(this.canSolve)
-        {
-            return this.value;
-        }
-
-        throw new NotSolvableException();
+        return this.value;
     }
 
     @Override

@@ -5,7 +5,6 @@ import java.util.LinkedList;
 
 import logic.Literal;
 import logic.Logic;
-import exception.NotSolvableException;
 
 /**
  * Not
@@ -60,20 +59,16 @@ public class Negation implements Logic, Operator
     /**
      * @return the first logical term
      */
+    @Override
     public Logic getPremise()
     {
         return this.one;
     }
 
     @Override
-    public boolean evaluate() throws NotSolvableException
+    public boolean evaluate()
     {
-        if(this.canSolve())
-        {
-            return !this.one.evaluate();
-        }
-
-        throw new NotSolvableException();
+        return !this.one.evaluate();
     }
 
     @Override
@@ -92,13 +87,7 @@ public class Negation implements Logic, Operator
 
             if(tempTerms.containsKey(temp.getName()))
             {
-                try
-                {
-                    tempTerms.get(temp.getName()).setValue(temp.evaluate());
-                }
-                catch(NotSolvableException e)
-                {
-                }
+                tempTerms.get(temp.getName()).setValue(temp.evaluate());
             }
             else
             {

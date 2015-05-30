@@ -5,7 +5,6 @@ import java.util.LinkedList;
 
 import logic.Literal;
 import logic.Logic;
-import exception.NotSolvableException;
 
 /**
  * Bidirectional Equivalence or XNOR. A<=>B is true if A and B are true or if A and B are false.
@@ -119,15 +118,9 @@ public class Biconditional implements Operator
     }
 
     @Override
-    public boolean evaluate() throws NotSolvableException
+    public boolean evaluate()
     {
-        if(this.canSolve())
-        {
-            boolean value = this.one.evaluate() && this.two.evaluate();
-            return value;
-        }
-
-        throw new NotSolvableException();
+        return this.one.evaluate() && this.two.evaluate();
     }
 
     @Override
@@ -146,13 +139,7 @@ public class Biconditional implements Operator
 
             if(tempTerms.containsKey(temp.getName()))
             {
-                try
-                {
-                    tempTerms.get(temp.getName()).setValue(temp.evaluate());
-                }
-                catch(NotSolvableException e)
-                {
-                }
+                tempTerms.get(temp.getName()).setValue(temp.evaluate());
             }
             else
             {
@@ -172,13 +159,7 @@ public class Biconditional implements Operator
 
             if(tempTerms.containsKey(temp.getName()))
             {
-                try
-                {
-                    tempTerms.get(temp.getName()).setValue(temp.evaluate());
-                }
-                catch(NotSolvableException e)
-                {
-                }
+                tempTerms.get(temp.getName()).setValue(temp.evaluate());
             }
             else
             {

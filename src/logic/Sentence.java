@@ -9,7 +9,6 @@ import logic.operator.Conjunction;
 import logic.operator.Disjunction;
 import logic.operator.Negation;
 import logic.operator.Operator;
-import exception.NotSolvableException;
 
 public class Sentence implements Operator
 {
@@ -124,7 +123,7 @@ public class Sentence implements Operator
      * @see logic.Logic#evaluate()
      */
     @Override
-    public boolean evaluate() throws NotSolvableException
+    public boolean evaluate()
     {
         boolean value = true;
         if(this.literal != null)
@@ -179,13 +178,7 @@ public class Sentence implements Operator
                 Literal temp = tempTerms.get(this.literal.getName());
                 if(!temp.canSolve())
                 {
-                    try
-                    {
-                        temp.setValue(this.literal.evaluate());
-                    }
-                    catch(NotSolvableException e)
-                    {
-                    }
+                    temp.setValue(this.literal.evaluate());
                 }
 
                 this.literal = temp;

@@ -5,7 +5,6 @@ import java.util.LinkedList;
 
 import logic.Literal;
 import logic.Sentence;
-import exception.NotSolvableException;
 
 public class BackwardChaining implements SolveMethod
 {
@@ -30,15 +29,9 @@ public class BackwardChaining implements SolveMethod
 
         for(Literal l : this.literals.values())
         {
-            try
+            if(l.evaluate())
             {
-                if(l.evaluate())
-                {
-                    knowns.add(l);
-                }
-            }
-            catch(NotSolvableException e)
-            {
+                knowns.add(l);
             }
 
             if(l.equals(new Literal(this.ask)))

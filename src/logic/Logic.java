@@ -3,18 +3,14 @@ package logic;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import exception.NotSolvableException;
-
 public interface Logic
 {
     /**
      * Gets the value of the logic piece, either true or false, by evaluating every sub piece of logic.
      * 
      * @return <b>true</b> if the logic evaluates to true.
-     * @throws NotSolvableException
-     *             if any of the literals have not had values set.
      */
-    public boolean evaluate() throws NotSolvableException;
+    public boolean evaluate();
 
     /**
      * Checks to see if all the literals have values.

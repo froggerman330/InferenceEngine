@@ -5,7 +5,6 @@ import java.util.LinkedList;
 
 import logic.Literal;
 import logic.Sentence;
-import exception.NotSolvableException;
 
 public class ForwardChaining implements SolveMethod
 {
@@ -29,16 +28,9 @@ public class ForwardChaining implements SolveMethod
 
         for(Literal l : this.literals.values())
         {
-            try
+            if(l.evaluate())
             {
-                if(l.evaluate())
-                {
-                    agenda.addLast(l);
-                }
-            }
-            catch(NotSolvableException e)
-            {
-
+                agenda.addLast(l);
             }
         }
 

@@ -5,7 +5,6 @@ import java.util.LinkedList;
 
 import logic.Literal;
 import logic.Sentence;
-import exception.NotSolvableException;
 
 public class TruthTable implements SolveMethod
 {
@@ -29,8 +28,7 @@ public class TruthTable implements SolveMethod
 
         for(Literal l : this.literals.values())
         {
-            int x = 1 << i;
-            masks[i] = x;
+            masks[i] = 1 << i;
             l.setValue(false);
             orderTerms.addFirst(l);
             i++;
@@ -50,37 +48,23 @@ public class TruthTable implements SolveMethod
 
             for(Sentence s : this.sentences)
             {
-                try
+                if(!s.evaluate())
                 {
-                    if(!s.evaluate())
-                    {
-                        failed = true;
-                        break;
-                    }
-                }
-                catch(NotSolvableException e)
-                {
-                    e.printStackTrace();
+                    failed = true;
+                    break;
                 }
             }
 
             if(!failed)
             {
-                try
+                if(this.literals.get(this.ask).evaluate())
                 {
-                    if(this.literals.get(this.ask).evaluate())
-                    {
-                        truths++;
-                    }
-                    else
-                    {
-                        System.out.println("NO");
-                        return;
-                    }
+                    truths++;
                 }
-                catch(NotSolvableException e)
+                else
                 {
-                    e.printStackTrace();
+                    System.out.println("NO");
+                    return;
                 }
             }
 

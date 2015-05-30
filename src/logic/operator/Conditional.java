@@ -5,7 +5,6 @@ import java.util.LinkedList;
 
 import logic.Literal;
 import logic.Logic;
-import exception.NotSolvableException;
 
 /**
  * Implies. A=>B is true if B is true or if A is true and B is false. (If A then B)
@@ -112,15 +111,9 @@ public class Conditional implements Operator
     }
 
     @Override
-    public boolean evaluate() throws NotSolvableException
+    public boolean evaluate()
     {
-        if(this.canSolve())
-        {
-            boolean value = this.conclusion.evaluate() ? this.conclusion.evaluate() : !(this.premise.evaluate());
-            return value;
-        }
-
-        throw new NotSolvableException();
+        return this.conclusion.evaluate() ? this.conclusion.evaluate() : !(this.premise.evaluate());
     }
 
     @Override
@@ -139,13 +132,7 @@ public class Conditional implements Operator
 
             if(tempTerms.containsKey(temp.getName()))
             {
-                try
-                {
-                    tempTerms.get(temp.getName()).setValue(temp.evaluate());
-                }
-                catch(NotSolvableException e)
-                {
-                }
+                tempTerms.get(temp.getName()).setValue(temp.evaluate());
             }
             else
             {
@@ -165,13 +152,7 @@ public class Conditional implements Operator
 
             if(tempTerms.containsKey(temp.getName()))
             {
-                try
-                {
-                    tempTerms.get(temp.getName()).setValue(temp.evaluate());
-                }
-                catch(NotSolvableException e)
-                {
-                }
+                tempTerms.get(temp.getName()).setValue(temp.evaluate());
             }
             else
             {
