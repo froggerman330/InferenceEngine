@@ -11,7 +11,7 @@ import logic.operator.Negation;
 import logic.operator.Operator;
 import exception.NotSolvableException;
 
-public class Sentence implements Logic
+public class Sentence implements Operator
 {
     Logic premise, conclusion;
     LinkedList<Operator> operators = new LinkedList<Operator>();
@@ -52,8 +52,8 @@ public class Sentence implements Logic
                     break;
             }
 
-            this.premise = o.getOne();
-            this.conclusion = o.getTwo();
+            this.premise = o.getPremise();
+            this.conclusion = o.getConclusion();
         }
         else
         {
@@ -66,9 +66,9 @@ public class Sentence implements Logic
             else
             {
                 Operator not = new Negation(sentence.substring(1));
-                if(not.getOne() instanceof Literal)
+                if(not.getPremise() instanceof Literal)
                 {
-                    t = (Literal) not.getOne();
+                    t = (Literal) not.getPremise();
                     t.setValue(false);
                 }
                 else
@@ -86,14 +86,16 @@ public class Sentence implements Logic
         return this.sentance;
     }
 
-    public LinkedList<Literal> getPremise()
+    @Override
+    public Logic getPremise()
     {
-        return this.premise.getLiterals();
+        return this.premise;
     }
 
-    public LinkedList<Literal> getConclusion()
+    @Override
+    public Logic getConclusion()
     {
-        return this.conclusion.getLiterals();
+        return this.conclusion;
     }
 
     @Override

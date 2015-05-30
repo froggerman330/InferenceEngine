@@ -60,7 +60,7 @@ public class Negation implements Logic, Operator
     /**
      * @return the first logical term
      */
-    public Logic getOne()
+    public Logic getPremise()
     {
         return this.one;
     }
@@ -124,7 +124,7 @@ public class Negation implements Logic, Operator
     }
 
     @Override
-    public Logic getTwo()
+    public Logic getConclusion()
     {
         // no second operator
         return null;

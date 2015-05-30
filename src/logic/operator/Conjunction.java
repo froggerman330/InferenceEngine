@@ -97,7 +97,7 @@ public class Conjunction implements Operator
      * @return the first logical term
      */
     @Override
-    public Logic getOne()
+    public Logic getPremise()
     {
         return this.one;
     }
@@ -106,7 +106,7 @@ public class Conjunction implements Operator
      * @return the second logical term
      */
     @Override
-    public Logic getTwo()
+    public Logic getConclusion()
     {
         return this.two;
     }

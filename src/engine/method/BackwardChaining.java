@@ -60,9 +60,9 @@ public class BackwardChaining implements SolveMethod
                 {
                     if(s.getLiterals().size() > 1)
                     {
-                        if(s.getConclusion().contains(p))
+                        if(s.getConclusion().getLiterals().contains(p))
                         {
-                            LinkedList<Literal> temp = s.getPremise();
+                            LinkedList<Literal> temp = s.getPremise().getLiterals();
                             temp.removeAll(agenda);
                             if(temp.size() == 0)
                             {

@@ -11,7 +11,7 @@ import logic.Logic;
  */
 public interface Operator extends Logic
 {
-    public Logic getOne();
+    public Logic getPremise();
 
-    public Logic getTwo();
+    public Logic getConclusion();
 }

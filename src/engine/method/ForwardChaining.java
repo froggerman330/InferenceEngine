@@ -46,7 +46,7 @@ public class ForwardChaining implements SolveMethod
         {
             if(sen.getLiterals().size() != 1)
             {
-                premiseCount.put(sen, sen.getPremise().size());
+                premiseCount.put(sen, sen.getPremise().getLiterals().size());
             }
         }
 
@@ -64,7 +64,7 @@ public class ForwardChaining implements SolveMethod
             {
                 if(s.getLiterals().size() != 1)
                 {
-                    if(s.getPremise().contains(p))
+                    if(s.getPremise().getLiterals().contains(p))
                     {
                         int temp = premiseCount.get(s) - 1;
                         premiseCount.put(s, temp);
@@ -72,7 +72,7 @@ public class ForwardChaining implements SolveMethod
 
                     if(premiseCount.get(s) == 0)
                     {
-                        for(Literal lit : s.getConclusion())
+                        for(Literal lit : s.getConclusion().getLiterals())
                         {
                             if(!agenda.contains(lit))
                             {

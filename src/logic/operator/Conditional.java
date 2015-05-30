@@ -15,7 +15,7 @@ import exception.NotSolvableException;
  */
 public class Conditional implements Operator
 {
-    private Logic one, two;
+    private Logic premise, conclusion;
 
     public Conditional(String first, String second)
     {
@@ -29,19 +29,19 @@ public class Conditional implements Operator
             switch(firstTerm.charAt(neutralPos1))
             {
                 case '&':
-                    this.one = new Conjunction(firstTerm.substring(0, neutralPos1),
+                    this.premise = new Conjunction(firstTerm.substring(0, neutralPos1),
                             firstTerm.substring(neutralPos1 + 1));
                     break;
                 case '|':
-                    this.one = new Disjunction(firstTerm.substring(0, neutralPos1),
+                    this.premise = new Disjunction(firstTerm.substring(0, neutralPos1),
                             firstTerm.substring(neutralPos1 + 1));
                     break;
                 case '<':
-                    this.one = new Biconditional(firstTerm.substring(0, neutralPos1),
+                    this.premise = new Biconditional(firstTerm.substring(0, neutralPos1),
                             firstTerm.substring(neutralPos1 + 3));
                     break;
                 case '=':
-                    this.one = new Conditional(firstTerm.substring(0, neutralPos1),
+                    this.premise = new Conditional(firstTerm.substring(0, neutralPos1),
                             firstTerm.substring(neutralPos1 + 2));
                     break;
             }
@@ -50,11 +50,11 @@ public class Conditional implements Operator
         {
             if(!firstTerm.startsWith("~"))
             {
-                this.one = new Literal(firstTerm);
+                this.premise = new Literal(firstTerm);
             }
             else
             {
-                this.one = new Negation(firstTerm.substring(1));
+                this.premise = new Negation(firstTerm.substring(1));
             }
         }
 
@@ -63,19 +63,19 @@ public class Conditional implements Operator
             switch(secondTerm.charAt(neutralPos2))
             {
                 case '&':
-                    this.two = new Conjunction(secondTerm.substring(0, neutralPos2),
+                    this.conclusion = new Conjunction(secondTerm.substring(0, neutralPos2),
                             secondTerm.substring(neutralPos2 + 1));
                     break;
                 case '|':
-                    this.two = new Disjunction(secondTerm.substring(0, neutralPos2),
+                    this.conclusion = new Disjunction(secondTerm.substring(0, neutralPos2),
                             secondTerm.substring(neutralPos2 + 1));
                     break;
                 case '<':
-                    this.two = new Biconditional(secondTerm.substring(0, neutralPos2),
+                    this.conclusion = new Biconditional(secondTerm.substring(0, neutralPos2),
                             secondTerm.substring(neutralPos2 + 3));
                     break;
                 case '=':
-                    this.two = new Conditional(secondTerm.substring(0, neutralPos2),
+                    this.conclusion = new Conditional(secondTerm.substring(0, neutralPos2),
                             secondTerm.substring(neutralPos2 + 2));
                     break;
             }
@@ -84,11 +84,11 @@ public class Conditional implements Operator
         {
             if(!secondTerm.startsWith("~"))
             {
-                this.two = new Literal(secondTerm);
+                this.conclusion = new Literal(secondTerm);
             }
             else
             {
-                this.two = new Negation(secondTerm.substring(1));
+                this.conclusion = new Negation(secondTerm.substring(1));
             }
         }
     }
@@ -97,18 +97,18 @@ public class Conditional implements Operator
      * @return the first logical term
      */
     @Override
-    public Logic getOne()
+    public Logic getPremise()
     {
-        return this.one;
+        return this.premise;
     }
 
     /**
      * @return the second logical term
      */
     @Override
-    public Logic getTwo()
+    public Logic getConclusion()
     {
-        return this.two;
+        return this.conclusion;
     }
 
     @Override
@@ -116,7 +116,7 @@ public class Conditional implements Operator
     {
         if(this.canSolve())
         {
-            boolean value = this.two.evaluate() ? this.two.evaluate() : !(this.one.evaluate());
+            boolean value = this.conclusion.evaluate() ? this.conclusion.evaluate() : !(this.premise.evaluate());
             return value;
         }
 
@@ -126,16 +126,16 @@ public class Conditional implements Operator
     @Override
     public boolean canSolve()
     {
-        return this.one.canSolve() && this.two.canSolve();
+        return this.premise.canSolve() && this.conclusion.canSolve();
     }
 
     @Override
     public HashMap<String, Literal> setTerms(HashMap<String, Literal> terms)
     {
         HashMap<String, Literal> tempTerms = terms;
-        if(this.one instanceof Literal)
+        if(this.premise instanceof Literal)
         {
-            Literal temp = (Literal) this.one;
+            Literal temp = (Literal) this.premise;
 
             if(tempTerms.containsKey(temp.getName()))
             {
@@ -152,16 +152,16 @@ public class Conditional implements Operator
                 tempTerms.put(temp.getName(), temp);
             }
 
-            this.one = tempTerms.get(temp.getName());
+            this.premise = tempTerms.get(temp.getName());
         }
         else
         {
-            tempTerms = this.one.setTerms(tempTerms);
+            tempTerms = this.premise.setTerms(tempTerms);
         }
 
-        if(this.two instanceof Literal)
+        if(this.conclusion instanceof Literal)
         {
-            Literal temp = (Literal) this.two;
+            Literal temp = (Literal) this.conclusion;
 
             if(tempTerms.containsKey(temp.getName()))
             {
@@ -178,11 +178,11 @@ public class Conditional implements Operator
                 tempTerms.put(temp.getName(), temp);
             }
 
-            this.two = tempTerms.get(temp.getName());
+            this.conclusion = tempTerms.get(temp.getName());
         }
         else
         {
-            tempTerms = this.two.setTerms(tempTerms);
+            tempTerms = this.conclusion.setTerms(tempTerms);
         }
 
         return tempTerms;
@@ -192,8 +192,8 @@ public class Conditional implements Operator
     public LinkedList<Literal> getLiterals()
     {
         LinkedList<Literal> allLogic = new LinkedList<Literal>();
-        allLogic.addAll(this.one.getLiterals());
-        allLogic.addAll(this.two.getLiterals());
+        allLogic.addAll(this.premise.getLiterals());
+        allLogic.addAll(this.conclusion.getLiterals());
         return allLogic;
     }
 }
