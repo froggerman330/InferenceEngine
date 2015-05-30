@@ -14,7 +14,7 @@ import java.io.IOException;
  */
 public class Read
 {
-    File toRead;
+    private File toRead;
 
     /**
      * The constructor for the read object that sets the file to read from.
@@ -24,7 +24,6 @@ public class Read
      */
     public Read(String file)
     {
-
         this.toRead = new File(file);
     }
 
@@ -38,7 +37,7 @@ public class Read
     {
         try(FileReader reader = new FileReader(this.toRead);BufferedReader fr = new BufferedReader(reader))
         {
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             String ask;
             String tell = fr.readLine();
 
@@ -48,7 +47,8 @@ public class Read
                 System.exit(1);
             }
 
-            sb.append(fr.readLine());
+            String clauseLine = fr.readLine();
+            String[] clauses = clauseLine.split(";");
 
             ask = fr.readLine();
 
@@ -57,11 +57,6 @@ public class Read
                 System.out.println("The file is not in valid format.");
                 System.exit(1);
             }
-
-            String clauseLine = sb.toString();
-            String[] clauses = clauseLine.split(";");
-
-            sb.delete(0, sb.length());
 
             sb.append(fr.readLine() + ";");
             for(String str : clauses)
@@ -94,19 +89,18 @@ public class Read
     /**
      * Takes a string of a clause and adds a set of brackets if necessary
      * 
-     * @param str
+     * @param sentence
      * @return
      */
-    private static String addBrackets(String str)
+    private static String addBrackets(String sentence)
     {
-        String s = str.trim();
+        String sen = sentence.trim();
         int neutralPos = 0, bracketAt = -1, logic = 0;
         boolean isLogic = false, needBracket = false, goBack = true;
 
-        for(int i = 0; i < s.toCharArray().length; i++)
-        {
-            char c = s.toCharArray()[i];
-            switch(c)
+        for(int i = 0; i < sen.toCharArray().length; i++)
+        {// count the amount of logic in the string.
+            switch(sen.toCharArray()[i])
             {
                 case '=':
                     logic++;
@@ -125,13 +119,12 @@ public class Read
 
         if(logic < 2)
         {
-            return s;
+            return sen;
         }
 
-        for(int i = 0; i < s.toCharArray().length; i++)
+        for(int i = 0; i < sen.toCharArray().length; i++)
         {
-            char d = s.toCharArray()[i];
-            switch(d)
+            switch(sen.toCharArray()[i])
             {
                 case '&':
                     isLogic = true;
@@ -153,20 +146,19 @@ public class Read
                     break;
                 case ' ':
                     if(neutralPos != 0)
-                    {
+                    {// space in between brackets, not allowed.
                         System.out.println("There is an error with the input. There must be no spaces inside brackets");
                         System.exit(1);
                     }
 
                     if(goBack)
-                    {
+                    {// add brackets around the first part of the string.
                         if(isLogic)
                         {
-                            char e = s.toCharArray()[i - 1];
-                            switch(e)
-                            {
+                            switch(sen.toCharArray()[i - 1])
+                            {// check the character before the space
                                 case ')':
-                                    // no bracket needed
+                                    // no bracket needed as there is already one there.
                                     i += 2;
                                     break;
                                 case '&':
@@ -178,24 +170,25 @@ public class Read
                                     bracketAt = i;
                                     break;
                                 default:
-                                    // add bracket, switch sides
-                                    s = "(" + s.substring(0, i) + ")" + s.substring(i + 1);
+                                    // add bracket
+                                    sen = "(" + sen.substring(0, i) + ")" + sen.substring(i + 1);
                                     i += 3;
                                     break;
                             }
                         }
+                        // after detecting the first space the brackets need to be added going the other direction
+                        // (whether they were added or not).
                         goBack = false;
                     }
                     else
-                    {
-                        char f = s.toCharArray()[i + 1];
-                        switch(f)
+                    {// add brackets around the second part of the string.
+                        switch(sen.toCharArray()[i + 1])
                         {
                             case '(':
-                                // no bracket needed
+                                // no bracket needed.
                                 break;
                             default:
-                                // may need to bracket
+                                // may need to bracket.
                                 needBracket = true;
                                 bracketAt = i;
                                 break;
@@ -205,19 +198,16 @@ public class Read
                     isLogic = false;
                     break;
                 default:
-                    if(i == (s.toCharArray().length - 1) && bracketAt > 0)
-                    {
-                        if(isLogic && needBracket)
-                        {
-                            s = s.substring(0, bracketAt) + "(" + s.substring(bracketAt + 1) + ")";
-                            neutralPos++;
-                            i++;
-                        }
+                    if(i == (sen.toCharArray().length - 1) && isLogic && needBracket)
+                    {// if it's the end of the string, there has been logic since the last space and we need a bracket
+                     // put a bracket around the end of the sentence.
+                        sen = sen.substring(0, bracketAt) + "(" + sen.substring(bracketAt + 1) + ")";
+                        neutralPos++;
+                        i++;
                     }
             }
         }
 
-        return s;
+        return sen;
     }
-
 }

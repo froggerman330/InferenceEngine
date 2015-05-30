@@ -27,26 +27,26 @@ public class Infer
      */
     public static void main(String... args)
     {
-        LinkedList<Sentence> sentanceList = new LinkedList<Sentence>();
+        LinkedList<Sentence> sentenceList = new LinkedList<Sentence>();
         HashMap<String, Literal> literals = new HashMap<String, Literal>();
 
         // 0 method
         // 1 file
         String[] readData = new Read(args[1]).getClauses();
         String ask = readData[0].toLowerCase();
-        String[] sentances = new String[readData.length - 1];
+        String[] sentences = new String[readData.length - 1];
 
         for(int i = 1; i < readData.length; i++)
         {// skips the first item which is the asked literal
-            sentances[i - 1] = readData[i];
+            sentences[i - 1] = readData[i];
         }
 
-        for(String sentance : sentances)
-        {
-            sentanceList.add(new Sentence(sentance));
+        for(String sentence : sentences)
+        {// creates all the sentences and logic
+            sentenceList.add(new Sentence(sentence));
         }
 
-        for(Sentence s : sentanceList)
+        for(Sentence s : sentenceList)
         {// updates all the literals used in all the logic to be the same objects.
             literals.putAll(s.setTerms(literals));
         }
@@ -56,13 +56,13 @@ public class Infer
         switch(args[0].toUpperCase())
         {
             case "TT":
-                method = new TruthTable(sentanceList, literals, ask);
+                method = new TruthTable(sentenceList, literals, ask);
                 break;
             case "FC":
-                method = new ForwardChaining(sentanceList, literals, ask);
+                method = new ForwardChaining(sentenceList, literals, ask);
                 break;
             case "BC":
-                method = new BackwardChaining(sentanceList, literals, ask);
+                method = new BackwardChaining(sentenceList, literals, ask);
         }
 
         method.solve();
