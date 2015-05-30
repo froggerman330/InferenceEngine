@@ -197,9 +197,10 @@ public class Sentence implements Operator
 
         if(!(this.premise instanceof Literal) && !(this.conclusion instanceof Literal)
                 && (this.conclusion != null && this.premise != null))
-        {
-            tempTerms.putAll(this.premise.setTerms(tempTerms));
-            tempTerms.putAll(this.conclusion.setTerms(tempTerms));
+        {// if it's not an instance of a literal and it's not null it must be a sentence with multiple literals. Update
+         // them all to use the same literal objects.
+            tempTerms.putAll(((Operator) this.premise).setTerms(tempTerms));
+            tempTerms.putAll(((Operator) this.conclusion).setTerms(tempTerms));
         }
 
         return tempTerms;

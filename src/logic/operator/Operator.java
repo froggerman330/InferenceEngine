@@ -1,5 +1,8 @@
 package logic.operator;
 
+import java.util.HashMap;
+
+import logic.Literal;
 import logic.Logic;
 
 /**
@@ -10,18 +13,26 @@ import logic.Logic;
  */
 public interface Operator extends Logic
 {
+    /**
+     * Set the literals of all following logic operators to be the same literal objects.
+     * 
+     * @param terms
+     *            a hashmap of the name of the literal and the literal itself.
+     * @return a new hashmap with the updated literals.
+     */
+    public HashMap<String, Literal> setTerms(HashMap<String, Literal> terms);
 
     /**
      * Gets the premise of any logical operator.
      * 
-     * @return the premise.
+     * @return the premise or the left side of the operator.
      */
     public Logic getPremise();
 
     /**
      * Gets the conclusion of any logical operator.
      * 
-     * @return the conclusion.
+     * @return the conclusion or the right side of any operator.
      */
     public Logic getConclusion();
 

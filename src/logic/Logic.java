@@ -1,6 +1,5 @@
 package logic;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 
 public interface Logic
@@ -25,12 +24,4 @@ public interface Logic
      * @return a linked list of the literals.
      */
     public LinkedList<Literal> getLiterals();
-
-    /**
-     * Set the literals of all following logic operators to be from the same group.
-     * 
-     * @param terms
-     * @return
-     */
-    public HashMap<String, Literal> setTerms(HashMap<String, Literal> terms);
 }

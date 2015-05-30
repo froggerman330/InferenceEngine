@@ -18,9 +18,9 @@ public class Biconditional implements Operator
 
     /**
      * 
-     * @param firstTerm
+     * @param first
      *            String of the first term in the biconditional. <b>(A|(B=>C))</b> <=> ((D&E)&F)|G
-     * @param secondTerm
+     * @param second
      *            String of the second term in the biconditional. (A|(B=>C)) <=> <b>((D&E)&F)|G</b>
      */
     public Biconditional(String first, String second)
@@ -150,7 +150,7 @@ public class Biconditional implements Operator
         }
         else
         {
-            tempTerms = this.one.setTerms(tempTerms);
+            tempTerms = ((Operator) this.one).setTerms(tempTerms);
         }
 
         if(this.two instanceof Literal)
@@ -170,7 +170,7 @@ public class Biconditional implements Operator
         }
         else
         {
-            tempTerms = this.two.setTerms(tempTerms);
+            tempTerms = ((Operator) this.two).setTerms(tempTerms);
         }
 
         return tempTerms;

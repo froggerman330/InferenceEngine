@@ -1,6 +1,5 @@
 package logic;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 
 /**
@@ -79,16 +78,6 @@ public class Literal implements Logic
     public boolean canSolve()
     {
         return this.canSolve;
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see logic.Logic#setTerms(java.util.HashMap)
-     */
-    @Override
-    public HashMap<String, Literal> setTerms(HashMap<String, Literal> terms)
-    {//
-        return null;
     }
 
     /*

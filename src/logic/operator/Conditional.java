@@ -143,7 +143,7 @@ public class Conditional implements Operator
         }
         else
         {
-            tempTerms = this.premise.setTerms(tempTerms);
+            tempTerms = ((Operator) this.premise).setTerms(tempTerms);
         }
 
         if(this.conclusion instanceof Literal)
@@ -163,7 +163,7 @@ public class Conditional implements Operator
         }
         else
         {
-            tempTerms = this.conclusion.setTerms(tempTerms);
+            tempTerms = ((Operator) this.conclusion).setTerms(tempTerms);
         }
 
         return tempTerms;

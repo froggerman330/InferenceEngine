@@ -143,7 +143,7 @@ public class Conjunction implements Operator
         }
         else
         {
-            tempTerms = this.one.setTerms(tempTerms);
+            tempTerms = ((Operator) this.one).setTerms(tempTerms);
         }
 
         if(this.two instanceof Literal)
@@ -163,7 +163,7 @@ public class Conjunction implements Operator
         }
         else
         {
-            tempTerms = this.two.setTerms(tempTerms);
+            tempTerms = ((Operator) this.two).setTerms(tempTerms);
         }
 
         return tempTerms;

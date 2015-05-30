@@ -98,7 +98,7 @@ public class Negation implements Logic, Operator
         }
         else
         {
-            tempTerms = this.one.setTerms(tempTerms);
+            tempTerms = ((Operator) this.one).setTerms(tempTerms);
         }
 
         return tempTerms;
