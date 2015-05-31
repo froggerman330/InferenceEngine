@@ -1,33 +1,33 @@
-package logic.operator;
+package com.logic.operator;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import logic.Literal;
-import logic.Logic;
+import com.logic.Literal;
+import com.logic.Logic;
 
 /**
- * And. A&B is a conjunction between A and B. True if both A and B are true.
+ * Bidirectional Equivalence or XNOR. A<=>B is true if A and B are true or if A and B are false.
  * 
  * @author Devon
  *
  */
-public class Conjunction implements Operator
+public class Biconditional implements Operator
 {
     private Logic one, two;
 
     /**
-     * The conjunction constructor separates the first and second terms into the appropriate sub-logical pieces.
+     * The constructor takes the first and second terms and makes two conditionals out of them. A=>B and B=>A.
      * 
      * @param first
-     *            the first logical sentence.
+     *            String of the first term in the biconditional. <b>(A|(B=>C))</b> <=> ((D&E)&F)|G
      * @param second
-     *            the second logical sentence.
+     *            String of the second term in the biconditional. (A|(B=>C)) <=> <b>((D&E)&F)|G</b>
      */
-    public Conjunction(String first, String second)
+    public Biconditional(String first, String second)
     {// gets the location of a bracket neutral logic symbol from a sentence that has had any outer brackets removed.
-        String firstTerm = this.trimOuterBrackets(first);
-        String secondTerm = this.trimOuterBrackets(second);
+        String firstTerm = this.trimOuterBrackets(first + "=>" + second);
+        String secondTerm = this.trimOuterBrackets(second + "=>" + first);
         int neutralPos1 = this.findBracketNeutrality(firstTerm);
         int neutralPos2 = this.findBracketNeutrality(secondTerm);
 
@@ -129,7 +129,7 @@ public class Conjunction implements Operator
     @Override
     public boolean evaluate()
     {
-        return this.one.evaluate() & this.two.evaluate();
+        return this.one.evaluate() && this.two.evaluate();
     }
 
     /*

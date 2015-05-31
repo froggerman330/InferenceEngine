@@ -1,10 +1,10 @@
-package logic.operator;
+package com.logic.operator;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import logic.Literal;
-import logic.Logic;
+import com.logic.Literal;
+import com.logic.Logic;
 
 /**
  * Implies. A=>B is true if B is true or if A is true and B is false. (If A then B)

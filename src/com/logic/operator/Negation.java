@@ -1,35 +1,31 @@
-package logic.operator;
+package com.logic.operator;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import logic.Literal;
-import logic.Logic;
+import com.logic.Literal;
+import com.logic.Logic;
 
 /**
- * Bidirectional Equivalence or XNOR. A<=>B is true if A and B are true or if A and B are false.
+ * Not. ~A. True if A is false.
  * 
  * @author Devon
  *
  */
-public class Biconditional implements Operator
+public class Negation implements Logic, Operator
 {
-    private Logic one, two;
+    private Logic one;
 
     /**
-     * The constructor takes the first and second terms and makes two conditionals out of them. A=>B and B=>A.
+     * The negation constructor separates the first logical piece into relevant sub-logical pieces.
      * 
      * @param first
-     *            String of the first term in the biconditional. <b>(A|(B=>C))</b> <=> ((D&E)&F)|G
-     * @param second
-     *            String of the second term in the biconditional. (A|(B=>C)) <=> <b>((D&E)&F)|G</b>
+     *            the logical sentence.
      */
-    public Biconditional(String first, String second)
+    public Negation(String first)
     {// gets the location of a bracket neutral logic symbol from a sentence that has had any outer brackets removed.
-        String firstTerm = this.trimOuterBrackets(first + "=>" + second);
-        String secondTerm = this.trimOuterBrackets(second + "=>" + first);
+        String firstTerm = this.trimOuterBrackets(first);
         int neutralPos1 = this.findBracketNeutrality(firstTerm);
-        int neutralPos2 = this.findBracketNeutrality(secondTerm);
 
         if(neutralPos1 != -1)
         {// if there is a bracket neutral logic symbol split the sentence at the symbol and create a new Operator of the
@@ -65,41 +61,6 @@ public class Biconditional implements Operator
                 this.one = new Negation(firstTerm.substring(1));
             }
         }
-
-        if(neutralPos2 != -1)
-        {// if there is a bracket neutral logic symbol split the sentence at the symbol and create a new Operator of the
-         // appropriate type with the two substrings.
-            switch(secondTerm.charAt(neutralPos2))
-            {
-                case '&':
-                    this.two = new Conjunction(secondTerm.substring(0, neutralPos2),
-                            secondTerm.substring(neutralPos2 + 1));
-                    break;
-                case '|':
-                    this.two = new Disjunction(secondTerm.substring(0, neutralPos2),
-                            secondTerm.substring(neutralPos2 + 1));
-                    break;
-                case '<':
-                    this.two = new Biconditional(secondTerm.substring(0, neutralPos2),
-                            secondTerm.substring(neutralPos2 + 3));
-                    break;
-                case '=':
-                    this.two = new Conditional(secondTerm.substring(0, neutralPos2),
-                            secondTerm.substring(neutralPos2 + 2));
-                    break;
-            }
-        }
-        else
-        {// if no bracket neutral logic was found this sentence must be a literal or a bigger negation.
-            if(!secondTerm.startsWith("~"))
-            {// if the sentence isn't a negation it must be a literal.
-                this.two = new Literal(secondTerm);
-            }
-            else
-            {// if it is a negation, create the negation and add it to the list of operations.
-                this.two = new Negation(secondTerm.substring(1));
-            }
-        }
     }
 
     /*
@@ -114,22 +75,12 @@ public class Biconditional implements Operator
 
     /*
      * (non-Javadoc)
-     * @see logic.operator.Operator#getConclusion()
-     */
-    @Override
-    public Logic getConclusion()
-    {
-        return this.two;
-    }
-
-    /*
-     * (non-Javadoc)
      * @see logic.Logic#evaluate()
      */
     @Override
     public boolean evaluate()
     {
-        return this.one.evaluate() && this.two.evaluate();
+        return !this.one.evaluate();
     }
 
     /*
@@ -160,26 +111,6 @@ public class Biconditional implements Operator
             tempTerms = ((Operator) this.one).setTerms(tempTerms);
         }
 
-        if(this.two instanceof Literal)
-        {// if the second logical piece is a literal.
-            Literal temp = (Literal) this.two;
-
-            if(tempTerms.containsKey(temp.getName()))
-            {// if the hashmap has the literal already set the value to be the value of the second literal.
-                tempTerms.get(temp.getName()).setValue(temp.evaluate());
-            }
-            else
-            {// if the hashmap doesn't have the literal in it, put the literal in it.
-                tempTerms.put(temp.getName(), temp);
-            }
-            // set the second literal to be the literal from the hashmap.
-            this.two = tempTerms.get(temp.getName());
-        }
-        else
-        {// if the second piece of logic isn't a literal, pass the term setting up the line to sublogic.
-            tempTerms = ((Operator) this.two).setTerms(tempTerms);
-        }
-
         return tempTerms;
     }
 
@@ -192,7 +123,17 @@ public class Biconditional implements Operator
     {
         LinkedList<Literal> allLogic = new LinkedList<Literal>();
         allLogic.addAll(this.one.getLiterals());
-        allLogic.addAll(this.two.getLiterals());
         return allLogic;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see logic.operator.Operator#getConclusion()
+     */
+    @Override
+    public Logic getConclusion()
+    {
+        // no second operator
+        return null;
     }
 }

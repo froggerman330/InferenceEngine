@@ -1,10 +1,10 @@
-package engine.method;
+package com.engine.method;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import logic.Literal;
-import logic.operator.Sentence;
+import com.logic.Literal;
+import com.logic.operator.Sentence;
 
 /**
  * The truth table solve method iterates through all variations of all literals and evaluates the sentences at each

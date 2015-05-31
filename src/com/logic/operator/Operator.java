@@ -1,9 +1,9 @@
-package logic.operator;
+package com.logic.operator;
 
 import java.util.HashMap;
 
-import logic.Literal;
-import logic.Logic;
+import com.logic.Literal;
+import com.logic.Logic;
 
 /**
  * An operator is either biconditional <=>, conditional =>, disjunction |, conjunction & or negation ~.
@@ -43,7 +43,7 @@ public interface Operator extends Logic
      * @param sentence
      *            the sentence to check for bracket neutral logic.
      * @return an integer representing the character position of the start of the logic symbol that is not between
-     *         brackets or {@link logic.operator.Operator#findLogicSymbol(String) the location of the logic symbol}.
+     *         brackets or {@link com.logic.operator.Operator#findLogicSymbol(String) the location of the logic symbol}.
      */
     default int findBracketNeutrality(String sentence)
     {

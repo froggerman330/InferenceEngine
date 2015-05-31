@@ -1,14 +1,14 @@
-package engine;
+package com.engine;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import logic.Literal;
-import logic.operator.Sentence;
-import engine.method.BackwardChaining;
-import engine.method.ForwardChaining;
-import engine.method.SolveMethod;
-import engine.method.TruthTable;
+import com.engine.method.BackwardChaining;
+import com.engine.method.ForwardChaining;
+import com.engine.method.SolveMethod;
+import com.engine.method.TruthTable;
+import com.logic.Literal;
+import com.logic.operator.Sentence;
 
 /**
  * The main class of the Inference engine takes some sentences and uses a method to solve for the asked literal.

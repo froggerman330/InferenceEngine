@@ -1,30 +1,30 @@
-package logic.operator;
+package com.logic.operator;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import logic.Literal;
-import logic.Logic;
+import com.logic.Literal;
+import com.logic.Logic;
 
 /**
- * Or. A|B. A or B. True if A or B is true.
+ * And. A&B is a conjunction between A and B. True if both A and B are true.
  * 
  * @author Devon
  *
  */
-public class Disjunction implements Operator
+public class Conjunction implements Operator
 {
     private Logic one, two;
 
     /**
-     * The disjunction constructor separates the first and second terms into the appropriate sub-logical pieces.
+     * The conjunction constructor separates the first and second terms into the appropriate sub-logical pieces.
      * 
      * @param first
      *            the first logical sentence.
      * @param second
      *            the second logical sentence.
      */
-    public Disjunction(String first, String second)
+    public Conjunction(String first, String second)
     {// gets the location of a bracket neutral logic symbol from a sentence that has had any outer brackets removed.
         String firstTerm = this.trimOuterBrackets(first);
         String secondTerm = this.trimOuterBrackets(second);
@@ -129,7 +129,7 @@ public class Disjunction implements Operator
     @Override
     public boolean evaluate()
     {
-        return this.one.evaluate() | this.two.evaluate();
+        return this.one.evaluate() & this.two.evaluate();
     }
 
     /*

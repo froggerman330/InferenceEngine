@@ -1,10 +1,10 @@
-package logic.operator;
+package com.logic.operator;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import logic.Literal;
-import logic.Logic;
+import com.logic.Literal;
+import com.logic.Logic;
 
 /**
  * A sentence is an operator that has many terms (which may also be operators).

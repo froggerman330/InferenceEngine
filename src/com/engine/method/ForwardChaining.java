@@ -1,10 +1,10 @@
-package engine.method;
+package com.engine.method;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import logic.Literal;
-import logic.operator.Sentence;
+import com.logic.Literal;
+import com.logic.operator.Sentence;
 
 /**
  * The forward chaining solution class. Scans all sentences and finds the number of premises they have and keeps that

@@ -1,4 +1,4 @@
-package logic;
+package com.logic;
 
 import java.util.LinkedList;
 

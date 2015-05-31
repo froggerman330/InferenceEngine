@@ -1,10 +1,10 @@
-package engine.method;
+package com.engine.method;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import logic.Literal;
-import logic.operator.Sentence;
+import com.logic.Literal;
+import com.logic.operator.Sentence;
 
 /**
  * Abstract solve method that holds all common information, a list of all literals and the letter that represents them,
