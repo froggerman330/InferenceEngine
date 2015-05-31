@@ -38,8 +38,10 @@ public class Read
         try(FileReader reader = new FileReader(this.toRead);BufferedReader fr = new BufferedReader(reader))
         {
             StringBuilder sb = new StringBuilder();
-            String ask;
-            String tell = fr.readLine();
+            String ask, query;
+            String tell, knowledgeBase;
+
+            tell = fr.readLine();
 
             if(!tell.equalsIgnoreCase("TELL"))
             {
@@ -47,8 +49,8 @@ public class Read
                 System.exit(1);
             }
 
-            String clauseLine = fr.readLine();
-            String[] clauses = clauseLine.split(";");
+            knowledgeBase = fr.readLine();
+            String[] sentences = knowledgeBase.split(";");
 
             ask = fr.readLine();
 
@@ -58,10 +60,19 @@ public class Read
                 System.exit(1);
             }
 
-            sb.append(fr.readLine() + ";");
-            for(String str : clauses)
+            query = fr.readLine();
+
+            if(!knowledgeBase.contains(query))
             {
-                sb.append(addBrackets(str));
+                System.out.println("The query: " + query
+                        + " is not included in the knowledgeBase. Therefore it cannot be entailed.");
+                System.exit(1);
+            }
+
+            sb.append(query + ";");
+            for(String sentence : sentences)
+            {
+                sb.append(addBrackets(sentence));
                 sb.append(";");
             }
 
