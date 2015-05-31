@@ -33,7 +33,7 @@ public class Read
      * 
      * @return an array of strings, each with no spaces. Containing terms and logical operators.
      */
-    public String[] getClauses()
+    public String[] getSentences()
     {
         try(FileReader reader = new FileReader(this.toRead);BufferedReader fr = new BufferedReader(reader))
         {

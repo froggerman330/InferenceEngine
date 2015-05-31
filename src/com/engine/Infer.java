@@ -32,7 +32,7 @@ public class Infer
 
         // 0 method
         // 1 file
-        String[] readData = new Read(args[1]).getClauses();
+        String[] readData = new Read(args[1]).getSentences();
         String ask = readData[0].toLowerCase();
         String[] sentences = new String[readData.length - 1];
 
