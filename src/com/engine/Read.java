@@ -98,10 +98,10 @@ public class Read
     }
 
     /**
-     * Takes a string of a clause and adds a set of brackets if necessary
+     * Takes a string of a sentence and adds a set of brackets if necessary
      * 
      * @param sentence
-     * @return
+     * @return the sentence with brackets added if necessary.
      */
     private static String addBrackets(String sentence)
     {
